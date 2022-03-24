@@ -37,7 +37,7 @@ const theme = createTheme({
 
 export default class App extends React.Component {
     render() {
-        console.log('her2e');
+        console.log('here');
         return (
             <ThemeProvider theme={theme}>
                 <h1>Test</h1>
