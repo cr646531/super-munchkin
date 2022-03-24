@@ -39,6 +39,7 @@ export default class App extends React.Component {
     render() {
         return (
             <ThemeProvider theme={theme}>
+                <h1>Test</h1>
                 <WelcomeScreen />
             </ThemeProvider>
         );
