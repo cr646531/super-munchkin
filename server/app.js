@@ -1,9 +1,9 @@
+const path = require('path');
 const express = require('express');
 const app = express();
 const db = require('./db');
 const { Player } = db.models;
 
-const path = require('path');
 const indexFile = path.join(__dirname, '..', 'public', 'index.html');
 
 app.use('/dist', express.static(path.join(__dirname, '../dist')));
@@ -15,12 +15,11 @@ app.get('/', (req, res, next) => res.sendFile(indexFile));
 
 // const { shuffle, rig, rigSplit } = require('./shuffle');
 
-// app.get('/data/cards', (req, res, next)=> {
-//     Card.findAll()
-//       .then(cards => shuffle(cards))
-//       .then(deck => res.send(deck))
-//       .catch(next);
-// });
+app.get('/data/players', (req, res, next) => {
+    Player.findAll()
+        .then((players) => res.send(players))
+        .catch(next);
+});
 
 // app.get('/data/rigged', (req, res, next)=> {
 //   Card.findAll()

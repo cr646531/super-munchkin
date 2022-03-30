@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { getPlayers } from '../../store';
 
 // import { Card, Player } from '.';
 
@@ -25,7 +27,12 @@ const styles = {
 };
 
 class MainScreen extends Component {
+    componentDidMount() {
+        this.props.getPlayers();
+    }
+
     render() {
+        console.log(this.props.players);
         return (
             <div>
                 <div style={styles.arena}></div>
@@ -35,4 +42,10 @@ class MainScreen extends Component {
     }
 }
 
-export default MainScreen;
+const mapStateToProps = ({ players }) => {
+    return {
+        players: players,
+    };
+};
+
+export default connect(mapStateToProps, { getPlayers })(MainScreen);
