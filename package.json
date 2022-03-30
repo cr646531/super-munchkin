@@ -6,7 +6,7 @@
   "scripts": {
     "postinstall": "npm run webpack",
     "webpack": "./node_modules/webpack/bin/webpack.js",
-    "start:dev": "npm run webpack -- --watch --mode=development & DATABASE_URL=postgres://localhost/blackjack nodemon server/server.js --ignore dist --ignore src",
+    "start:dev": "npm run webpack -- --watch --mode=development & DATABASE_URL=postgres://localhost/munchkin nodemon server/server.js --ignore dist --ignore src",
     "start": "npm run webpack -- --watch --mode=development & DATABASE_URL=postgres://khasomkppaweft:4a683d2a4c933ca46dc2c862bda85c6a005ed931204a7cddc31c0b4ef47af9c7@ec2-184-73-176-11.compute-1.amazonaws.com:5432/d5feo5ua0cl8i3 node server/server.js --ignore dist --ignore src"
   },
   "repository": {
@@ -27,8 +27,9 @@
     "babel-preset-react": "^6.24.1",
     "express": "^4.16.3",
     "jquery": "^3.4.1",
-    "pg": "^7.12.1",
-    "pg-hstore": "^2.3.3",
+    "nodemon": "^2.0.15",
+    "pg": "^7.18.2",
+    "pg-hstore": "^2.3.4",
     "popper.js": "^1.16.0",
     "react": "^16.5.0",
     "react-animations": "^1.0.0",
@@ -39,7 +40,8 @@
     "redux": "^4.0.0",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
-    "sequelize": "^4.44.3",
+    "sequelize": "^4.44.4",
+    "sequelize-cli": "^6.4.1",
     "styled-components": "^4.4.1",
     "webpack": "^4.17.2",
     "webpack-cli": "^3.1.0"
