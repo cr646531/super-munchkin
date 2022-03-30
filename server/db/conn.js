@@ -1,6 +1,18 @@
-const Sequelize = require('sequelize');
-const conn = new Sequelize(process.env.DATABASE_URL, {
-    dialect: 'postgres'
-});
+const { Sequelize } = require('@sequelize/core');
+
+const conn = new Sequelize('postgres://hq:passord@localhost:5432/munchkin');
+
+const test = () => {
+    console.log('Testing database connection');
+    conn.authenticate()
+        .then(() => {
+            console.info('INFO - Database connected.');
+        })
+        .catch((err) => {
+            console.error('ERROR - Unable to connect to the database:', err);
+        });
+};
+
+test();
 
 module.exports = conn;
