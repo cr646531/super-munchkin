@@ -80,7 +80,7 @@ class Arena extends Component {
                 </div>
 
                 {active ? (
-                    <Card type={active.type} name={active.name} small style={{ marginLeft: 160 }} />
+                    <Card type={active.type} name={active.name} medium style={{ marginLeft: 160 }} />
                 ) : (
                     <Card small style={{ marginLeft: 160 }} />
                 )}

@@ -8,6 +8,9 @@ const Card = conn.define('Card', {
     name: {
         type: DataTypes.STRING,
     },
+    category: {
+        type: DataTypes.STRING,
+    },
 });
 
 module.exports = Card;
