@@ -32,26 +32,53 @@ const syncAndSeed = () => {
                 hand: [],
             }),
 
-            // doors
+            // creatures
             Card.create({
                 type: 'door',
                 name: 'Ape',
+                category: 'creature',
             }),
             Card.create({
                 type: 'door',
                 name: 'Bear',
+                category: 'creature',
             }),
             Card.create({
                 type: 'door',
                 name: 'Cobra',
+                category: 'creature',
             }),
             Card.create({
                 type: 'door',
                 name: 'Dragon',
+                category: 'creature',
             }),
             Card.create({
                 type: 'door',
                 name: 'Eagle',
+                category: 'creature',
+            }),
+
+            // races
+            Card.create({
+                type: 'door',
+                name: 'Elf',
+                category: 'race',
+            }),
+            Card.create({
+                type: 'door',
+                name: 'Dwarf',
+                category: 'race',
+            }),
+            Card.create({
+                type: 'door',
+                name: 'Halfling',
+                category: 'race',
+            }),
+            Card.create({
+                type: 'door',
+                name: 'Orc',
+                category: 'race',
             }),
 
             // treasures
