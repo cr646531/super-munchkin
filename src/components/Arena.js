@@ -20,40 +20,8 @@ const styles = {
 };
 
 class Arena extends Component {
-    // constructor() {
-    //     super();
-    //     this.state = {
-
-    //     };
-    // }
-
     render() {
         const { active, doors, treasures } = this.props;
-        console.log('active: ', active);
-
-        // generateAreaGrid = () => {
-        //     const arenaGrid = {
-        //         top: Array(6).fill({}),
-        //         middle: Array(6).fill({}),
-        //         bottom: Array(6).fill({}),
-        //     };
-
-        //     const arenaGridKeys = Object.keys(arenaGrid);
-
-        //     return (
-        //         <div style={styles.col}>
-        //             {arenaGridKeys.map((rowName, index) => (
-        //                 <div key={index} style={styles.row}>
-        //                     {arenaGrid[rowName].map((card, index) => (
-        //                         <div key={index}>
-        //                             <Card type='door' face='down' small />
-        //                         </div>
-        //                     ))}
-        //                 </div>
-        //             ))}
-        //         </div>
-        //     );
-        // };
 
         return (
             <div
