@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { getPlayers } from '../../store';
+
+import { Arena, Toolbelt } from '@components';
 
 // import { Card, Player } from '.';
 
@@ -10,7 +14,6 @@ const styles = {
         height: '50vh',
         width: '100vw',
         backgroundColor: '#C9C9C9',
-        zIndex: -1,
     },
     toolbelt: {
         position: 'fixed',
@@ -19,20 +22,34 @@ const styles = {
         height: '50vh',
         width: '100vw',
         backgroundColor: 'pink',
-        zIndex: -1,
         padding: 16,
     },
 };
 
 class MainScreen extends Component {
+    componentDidMount() {
+        this.props.getPlayers();
+    }
+
     render() {
+        console.log(this.props.players);
         return (
             <div>
-                <div style={styles.arena}></div>
-                <div style={styles.toolbelt}></div>
+                <div style={styles.arena}>
+                    <Arena />
+                </div>
+                <div style={styles.toolbelt}>
+                    <Toolbelt />
+                </div>
             </div>
         );
     }
 }
 
-export default MainScreen;
+const mapStateToProps = ({ players }) => {
+    return {
+        players: players,
+    };
+};
+
+export default connect(mapStateToProps, { getPlayers })(MainScreen);

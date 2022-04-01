@@ -13,11 +13,21 @@ module.exports = {
                 test: /\.js$/,
                 loader: 'babel-loader',
             },
+            {
+                test: /\.(png|jpg|gif)$/,
+                use: [{ loader: 'file-loader', options: {} }],
+            },
+            {
+                test: /\.svg$/,
+                use: ['@svgr/webpack'],
+            },
         ],
     },
     resolve: {
         alias: {
             '@components': path.resolve(__dirname, 'src/components'),
+            '@constants': path.resolve(__dirname, 'src/constants'),
+            '@public': path.resolve(__dirname, 'public'),
         },
     },
 };
