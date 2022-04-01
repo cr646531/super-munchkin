@@ -8,8 +8,9 @@ import { INITIAL_DOORS, INITIAL_TREASURES } from '@constants';
 const initialState = {
     players: [],
     hand: [],
-    doors: INITIAL_DOORS,
-    treasures: INITIAL_TREASURES,
+    doors: [],
+    treasures: [],
+    active: null,
     error: false,
 };
 
@@ -20,9 +21,13 @@ const reducer = (state = initialState, action) => {
 
     switch (action.type) {
         case 'GET_PLAYERS':
-            return Object.assign({}, state, {
-                players: action.payload,
-            });
+            return Object.assign({}, state, { players: action.payload });
+        case 'GET_DOORS':
+            return Object.assign({}, state, { doors: action.payload });
+        case 'GET_TREASURES':
+            return Object.assign({}, state, { treasures: action.payload });
+        case 'KICK_OPEN_DOOR':
+            return Object.assign({}, state, { active: action.payload });
 
         case 'DRAW_DOOR':
             deckCopy = [...state.doors];
@@ -64,6 +69,33 @@ export const getPlayers = () => {
             .get('/data/players')
             .then((res) => res.data)
             .then((players) => dispatch({ type: 'GET_PLAYERS', payload: players }));
+    };
+};
+
+export const getDoors = () => {
+    return (dispatch) => {
+        return axios
+            .get('/data/doors')
+            .then((res) => res.data)
+            .then((doors) => dispatch({ type: 'GET_DOORS', payload: doors }));
+    };
+};
+
+export const getTreasures = () => {
+    return (dispatch) => {
+        return axios
+            .get('/data/treasures')
+            .then((res) => res.data)
+            .then((treasures) => dispatch({ type: 'GET_TREASURES', payload: treasures }));
+    };
+};
+
+export const kickOpenDoor = () => {
+    return (dispatch) => {
+        return axios
+            .get('/data/doors/kick')
+            .then((res) => res.data)
+            .then((card) => dispatch({ type: 'KICK_OPEN_DOOR', payload: card }));
     };
 };
 

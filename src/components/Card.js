@@ -12,17 +12,31 @@ export default class Card extends React.Component {
     }
 
     render() {
-        const { type = 'door', face = 'up', level, name, text, subtext, small, onClick } = this.props;
+        const { type, face, level, name, text, subtext, small, onClick, style } = this.props;
+
+        if (!type) {
+            return (
+                <div style={style}>
+                    <div
+                        style={{
+                            width: small ? 100 : 200,
+                            height: small ? 150 : 300,
+                            cursor: 'pointer',
+                            border: `${small ? '3' : '6'}px solid #331412`,
+                            borderRadius: 8,
+                            // backgroundColor: '#FFFFFF',
+                        }}
+                    />
+                </div>
+            );
+        }
 
         return (
-            <div>
+            <div style={style}>
                 <div
                     style={{
                         width: small ? 100 : 200,
                         height: small ? 150 : 300,
-                        // border: `${small ? '3' : '6'}px solid ${isEmpty ? '#FFFFFF' : '#331412'}`,
-                        // borderRadius: 16,
-                        // backgroundColor: '#FFFFFF',
                         cursor: 'pointer',
                         backgroundImage: type && face ? `url(/cards/${type}_${face}.png)` : 'url(/cards/door_up.png)',
                         backgroundSize: 'contain',

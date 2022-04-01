@@ -5,6 +5,12 @@ const Player = conn.define('Player', {
     name: {
         type: DataTypes.STRING,
     },
+    level: {
+        type: DataTypes.INTEGER,
+    },
+    speed: {
+        type: DataTypes.INTEGER,
+    },
 });
 
 module.exports = Player;
