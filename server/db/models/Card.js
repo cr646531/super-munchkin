@@ -11,6 +11,10 @@ const Card = conn.define('Card', {
     category: {
         type: DataTypes.STRING,
     },
+    status: {
+        type: DataTypes.STRING,
+        defaultValue: 'inactive',
+    },
 });
 
 module.exports = Card;

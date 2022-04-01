@@ -15,6 +15,20 @@ app.use(require('body-parser').json());
 // ROUTES
 app.get('/', (req, res, next) => res.sendFile(indexFile));
 
+app.get('/data/init', async (req, res, next) => {
+    try {
+        const player = await Player.findOne({ where: { name: 'Buckets' } });
+        const hand = await Card.findAll({ where: { PlayerId: player.id } });
+        const doors = await Card.findAll({ where: { type: 'door', status: 'inactive' } });
+        const treasures = await Card.findAll({ where: { type: 'treasure', status: 'inactive' } });
+        const active = await Card.findOne({ where: { status: 'active' }, order: conn.random(), limit: 1 });
+        res.send({ player, hand, doors, treasures, active });
+    } catch (err) {
+        console.log('err: ', err);
+        next(err);
+    }
+});
+
 app.get('/data/players', (req, res, next) => {
     Player.findAll()
         .then((players) => res.send(players))
@@ -33,14 +47,28 @@ app.get('/data/treasures', (req, res, next) => {
         .catch(next);
 });
 
-app.get('/data/doors/kick', (req, res, next) => {
-    Card.findOne({
-        where: { type: 'door' },
-        order: conn.random(),
-        limit: 1,
-    })
-        .then((card) => res.send(card))
-        .catch(next);
+app.get('/data/doors/kick', async (req, res, next) => {
+    try {
+        const topCard = await Card.findOne({ where: { type: 'door' }, order: conn.random(), limit: 1 });
+
+        topCard.status = 'active';
+        await topCard.save();
+
+        res.send(topCard);
+    } catch (err) {
+        console.log('err: ', err);
+        next(err);
+    }
+    // Card.findOne({
+    //     where: { type: 'door' },
+    //     order: conn.random(),
+    //     limit: 1,
+    // })
+    //     .then((card) => {
+    //         card.set({ status: 'active' })
+
+    //     })
+    //     .catch(next);
 });
 
 // app.get('/data/rigged', (req, res, next)=> {

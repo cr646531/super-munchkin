@@ -20,6 +20,8 @@ const reducer = (state = initialState, action) => {
     let handCopy = null;
 
     switch (action.type) {
+        case 'INIT':
+            return Object.assign({}, state, action.payload);
         case 'GET_PLAYERS':
             return Object.assign({}, state, { players: action.payload });
         case 'GET_DOORS':
@@ -62,6 +64,15 @@ const reducer = (state = initialState, action) => {
 export default createStore(reducer, applyMiddleware(think, logger));
 
 // action dispatch
+
+export const init = () => {
+    return (dispatch) => {
+        return axios
+            .get('/data/init')
+            .then((res) => res.data)
+            .then((data) => dispatch({ type: 'INIT', payload: data }));
+    };
+};
 
 export const getPlayers = () => {
     return (dispatch) => {
