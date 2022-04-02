@@ -1,6 +1,4 @@
 node_modules
 package-lock.json
 dist
-.DS_Store
-public/.DS_Store
-public/icons/.DS_Store
+**/.DS_Store
