@@ -2,6 +2,9 @@ const path = require('path');
 const express = require('express');
 const app = express();
 
+// routers
+const { players } = require('./routers');
+
 const db = require('./db');
 const { Card, Player } = db.models;
 const conn = db.conn;
@@ -11,6 +14,7 @@ const indexFile = path.join(__dirname, '..', 'public', 'index.html');
 app.use('/dist', express.static(path.join(__dirname, '../dist')));
 app.use(express.static('public'));
 app.use(require('body-parser').json());
+app.use('/players', players);
 
 // ROUTES
 app.get('/', (req, res, next) => res.sendFile(indexFile));
