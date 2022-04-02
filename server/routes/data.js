@@ -1,4 +1,5 @@
 const conn = require('../db').conn;
+const { Op } = require('@sequelize/core');
 
 // router
 const router = require('express').Router();
@@ -73,6 +74,13 @@ router.get('/', async (req, res, next) => {
         const headgear = await Card.findOne({ where: { PlayerId: player.id, category: 'headgear', equipped: true } });
         const armor = await Card.findOne({ where: { PlayerId: player.id, category: 'armor', equipped: true } });
         const footgear = await Card.findOne({ where: { PlayerId: player.id, category: 'footgear', equipped: true } });
+        const equipped = await Card.findAll({
+            where: {
+                PlayerId: player.id,
+                equipped: true,
+                category: { [Op.notIn]: ['race', 'class', 'headgear', 'footgear', 'armor'] },
+            },
+        });
 
         res.send({
             player,
@@ -87,6 +95,7 @@ router.get('/', async (req, res, next) => {
             armor,
             headgear,
             footgear,
+            equipped,
         });
     } catch (err) {
         next(err);
