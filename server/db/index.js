@@ -1,9 +1,10 @@
 const conn = require('./conn');
 const models = require('./models');
-const { Card, Player } = models;
+const { Card, Player, Remote } = models;
 
 Card.belongsTo(Player);
 Player.hasMany(Card);
+Remote.belongsTo(Player);
 
 const syncAndSeed = () => {
     console.log('database syncing and seeding');

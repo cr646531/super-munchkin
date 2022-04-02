@@ -1,6 +1,8 @@
 // import packages
 import { createStore, applyMiddleware, combineReducers, bindActionCreators } from 'redux';
-import think from 'redux-thunk';
+import thunkMiddleware from 'redux-thunk';
+import { composeWithDevTools } from 'redux-devtools-extension';
+// import think from 'redux-thunk';
 import { logger } from 'redux-logger';
 import axios from 'axios';
 import { INITIAL_DOORS, INITIAL_TREASURES } from '@constants';
@@ -11,7 +13,8 @@ const initialState = {
     doors: [],
     treasures: [],
     active: null,
-    error: false,
+    error: '',
+    updatedCard: null,
 };
 
 const reducer = (state = initialState, action) => {
@@ -20,6 +23,8 @@ const reducer = (state = initialState, action) => {
     let handCopy = null;
 
     switch (action.type) {
+        case 'UPDATE_CARD':
+            return Object.assign({}, state, { updatedCard: action.payload });
         case 'INIT':
             return Object.assign({}, state, action.payload);
         case 'GET_PLAYERS':
@@ -29,6 +34,8 @@ const reducer = (state = initialState, action) => {
         case 'GET_TREASURES':
             return Object.assign({}, state, { treasures: action.payload });
         case 'KICK_OPEN_DOOR':
+            return Object.assign({}, state, { active: action.payload });
+        case 'GET_ACTIVE_CARD':
             return Object.assign({}, state, { active: action.payload });
 
         case 'DRAW_DOOR':
@@ -61,9 +68,21 @@ const reducer = (state = initialState, action) => {
 };
 
 // create store
-export default createStore(reducer, applyMiddleware(think, logger));
+export default createStore(reducer, composeWithDevTools(applyMiddleware(thunkMiddleware, logger)));
 
-// action dispatch
+// actions
+
+export const updateCard = (card) => {
+    return (dispatch) => {
+        return axios({
+            method: 'put',
+            url: '/card/update',
+            data: { card },
+        })
+            .then((res) => res.data)
+            .then((card) => dispatch({ type: 'UPDATE_CARD', payload: card }));
+    };
+};
 
 export const init = () => {
     return (dispatch) => {
@@ -71,6 +90,39 @@ export const init = () => {
             .get('/data/init')
             .then((res) => res.data)
             .then((data) => dispatch({ type: 'INIT', payload: data }));
+    };
+};
+
+export const kickOpenDoor = () => {
+    return (dispatch) => {
+        return axios
+            .get('/data/doors/kick')
+            .then((res) => res.data)
+            .then((card) => dispatch({ type: 'KICK_OPEN_DOOR', payload: card }));
+    };
+};
+
+export const drawTreasure = () => {
+    return (dispatch) => {
+        dispatch({ type: 'DRAW_TREASURE' });
+    };
+};
+
+export const getActiveCard = () => {
+    return (dispatch) => {
+        return axios
+            .get('/data/doors/active')
+            .then((res) => res.data)
+            .then((activeCard) => dispatch({ type: 'GET_ACTIVE_CARD', payload: activeCard }));
+    };
+};
+
+/*
+    </3
+*/
+export const drawDoor = () => {
+    return (dispatch) => {
+        dispatch({ type: 'DRAW_DOOR' });
     };
 };
 
@@ -98,26 +150,5 @@ export const getTreasures = () => {
             .get('/data/treasures')
             .then((res) => res.data)
             .then((treasures) => dispatch({ type: 'GET_TREASURES', payload: treasures }));
-    };
-};
-
-export const kickOpenDoor = () => {
-    return (dispatch) => {
-        return axios
-            .get('/data/doors/kick')
-            .then((res) => res.data)
-            .then((card) => dispatch({ type: 'KICK_OPEN_DOOR', payload: card }));
-    };
-};
-
-export const drawDoor = () => {
-    return (dispatch) => {
-        dispatch({ type: 'DRAW_DOOR' });
-    };
-};
-
-export const drawTreasure = () => {
-    return (dispatch) => {
-        dispatch({ type: 'DRAW_TREASURE' });
     };
 };

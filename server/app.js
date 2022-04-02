@@ -19,12 +19,33 @@ app.get('/data/init', async (req, res, next) => {
     try {
         const player = await Player.findOne({ where: { name: 'Buckets' } });
         const hand = await Card.findAll({ where: { PlayerId: player.id } });
-        const doors = await Card.findAll({ where: { type: 'door', status: 'inactive' } });
+        const doors = await Card.findAll({ where: { type: 'door', status: 'inactive', PlayerId: null } });
         const treasures = await Card.findAll({ where: { type: 'treasure', status: 'inactive' } });
         const active = await Card.findOne({ where: { status: 'active' }, order: conn.random(), limit: 1 });
         res.send({ player, hand, doors, treasures, active });
     } catch (err) {
         console.log('err: ', err);
+        next(err);
+    }
+});
+
+app.get('/data/doors/active', (req, res, next) => {
+    Card.findOne({ where: { status: 'active' } })
+        .then((activeCard) => res.send(activeCard))
+        .catch(next);
+});
+
+app.put('/card/update', async (req, res, next) => {
+    const { card } = req.body;
+
+    try {
+        const cardToUpdate = await Card.findOne({ where: { id: req.body.card.id }, order: conn.random(), limit: 1 });
+        cardToUpdate.set(card);
+        console.log('cardToUpdate: ', cardToUpdate);
+        await cardToUpdate.save();
+
+        res.send(card);
+    } catch (err) {
         next(err);
     }
 });
@@ -49,7 +70,8 @@ app.get('/data/treasures', (req, res, next) => {
 
 app.get('/data/doors/kick', async (req, res, next) => {
     try {
-        const topCard = await Card.findOne({ where: { type: 'door' }, order: conn.random(), limit: 1 });
+        const topCard = await Card.findOne({ where: { type: 'door', PlayerId: null }, order: conn.random(), limit: 1 });
+        const player = await Player.findOne({ where: { name: 'Buckets' } });
 
         topCard.status = 'active';
         await topCard.save();
