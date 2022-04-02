@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Button, Drawer, Typography } from '@mui/material';
 import { Card } from '@components';
 import { connect } from 'react-redux';
+import { getHand, playerEquip } from '@src/store';
 
 const modals = {
     HAND: 'HAND',
@@ -24,7 +25,7 @@ class Toolbelt extends Component {
     }
 
     render() {
-        const { hand, player } = this.props;
+        const { getHand, hand, player, playerEquip } = this.props;
         const { modalOpen } = this.state;
 
         return (
@@ -50,6 +51,7 @@ class Toolbelt extends Component {
                         <Typography variant='h4'>{`name: ${player.name}`}</Typography>
                         <Typography variant='h4'>{`phase: ${player.phase}`}</Typography>
                         <Typography variant='h4'>{`speed: ${player.speed}`}</Typography>
+                        <Typography variant='h4'>{`race: ${player.race}`}</Typography>
                     </div>
                 )}
 
@@ -60,7 +62,16 @@ class Toolbelt extends Component {
                 >
                     <div style={styles.scrollableRow} onClick={() => this.setState({ modalOpen: modals.HAND })}>
                         {hand.map((card, index) => (
-                            <div key={index} style={{ margin: 24 }}>
+                            <div
+                                key={index}
+                                style={{ margin: 24 }}
+                                onClick={() => {
+                                    if (card.category === 'race') {
+                                        playerEquip({ card, player });
+                                        setTimeout(() => getHand({ player }), 100);
+                                    }
+                                }}
+                            >
                                 <Card key={index} card={card} />
                             </div>
                         ))}
@@ -75,4 +86,4 @@ const mapStateToProps = ({ hand, player }) => {
     return { hand, player };
 };
 
-export default connect(mapStateToProps, {})(Toolbelt);
+export default connect(mapStateToProps, { getHand, playerEquip })(Toolbelt);

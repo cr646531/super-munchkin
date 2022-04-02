@@ -29,6 +29,7 @@ module.exports = {
             '@constants': path.resolve(__dirname, 'src/constants'),
             '@public': path.resolve(__dirname, 'public'),
             '@db': path.resolve(__dirname, 'server/db'),
+            '@src': path.resolve(__dirname, 'src'),
         },
     },
 };

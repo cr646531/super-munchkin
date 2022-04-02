@@ -51,6 +51,13 @@ app.get('/data/init', async (req, res, next) => {
     }
 });
 
+app.put('/data/hand', (req, res, next) => {
+    const { player } = req.body;
+    Card.findAll({ where: { PlayerId: player.id, status: 'inactive' } })
+        .then((cards) => res.send(cards))
+        .catch(next);
+});
+
 app.get('/data/doors/active', (req, res, next) => {
     Card.findOne({ where: { status: 'active' } })
         .then((activeCard) => res.send(activeCard))
@@ -71,11 +78,29 @@ app.put('/card/update', async (req, res, next) => {
     }
 });
 
+app.put('/player/equip', async (req, res, next) => {
+    try {
+        const player = await Player.findOne({ where: { id: req.body.player.id } });
+        const card = await Card.findOne({ where: { id: req.body.card.id } });
+
+        if (card.category === 'race') {
+            card.status = 'used';
+            await card.save();
+            player.race = card.name;
+            await player.save();
+        }
+
+        res.send(player);
+    } catch (err) {
+        next(err);
+    }
+});
+
 app.put('/player/update', async (req, res, next) => {
     const { player } = req.body;
 
     try {
-        const playerToUpdate = await Player.findOne({ where: { id: req.body.player.id } });
+        const playerToUpdate = await Player.findOne({ where: { id: player.id } });
         playerToUpdate.set(player);
         await playerToUpdate.save();
 
