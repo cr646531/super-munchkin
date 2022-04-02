@@ -2,7 +2,11 @@ import React from 'react';
 import { Typography } from '@mui/material';
 import { Icon } from '@components';
 
-const styles = {};
+const styles = {
+    tapped: {
+        transform: 'rotate(90deg)',
+    },
+};
 
 export default class Card extends React.Component {
     constructor() {
@@ -13,9 +17,9 @@ export default class Card extends React.Component {
     }
 
     render() {
-        const { card, face = 'up', small, medium, onClick, style } = this.props;
+        const { card, face = 'up', small, medium, onClick, style, tapped } = this.props;
 
-        if (!card) {
+        if (!card || !card.type) {
             return (
                 <div style={style}>
                     <div
@@ -25,17 +29,31 @@ export default class Card extends React.Component {
                             cursor: 'pointer',
                             border: `${small ? '3' : '6'}px solid #331412`,
                             borderRadius: 8,
-                            // backgroundColor: '#FFFFFF',
                         }}
-                    />
+                    >
+                        {card && card.name && (
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    height: '100%',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                }}
+                            >
+                                <Typography variant='p'>{card.name}</Typography>
+                            </div>
+                        )}
+                    </div>
                 </div>
             );
         }
 
-        const { type, name, category, status, icon, bonus } = card;
+        const { type, name, category, status, icon, bonus, equipped } = card;
 
         return (
-            <div style={style}>
+            // <div style={!equipped && type === 'treasure' ? styles.tapped : null}>
+            <div>
                 <div
                     style={{
                         width: small ? 100 : medium ? 150 : 200,
@@ -65,32 +83,6 @@ export default class Card extends React.Component {
                         )}
                     </div>
                 </div>
-                {/* <div style={{ height: '100%', display: 'flex', flexDirection: 'column', padding: 8 }}>
-                    {level && (
-                        <div
-                            style={{
-                                display: 'flex',
-                                flexDirection: 'row',
-                                justifyContent: 'center',
-                                marginBottom: 8,
-                            }}
-                        >
-                            Level {level}
-                        </div>
-                    )}
-                    <div
-                        style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            justifyContent: 'center',
-                            marginBottom: 16,
-                        }}
-                    >
-                        {name || 'NAME'}
-                    </div>
-                    <div style={{ flex: 1, alignSelf: 'flex-start' }}>{text || 'TEXT'}</div>
-                    <div style={{ flex: 1, alignSelf: 'flex-start' }}>{subtext || 'SUBTEXT'}</div>
-                </div> */}
             </div>
         );
     }

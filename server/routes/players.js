@@ -15,7 +15,7 @@ router.get('/', (req, res, next) => {
         .catch(next);
 });
 
-router.put('/equip', async (req, res, next) => {
+router.put('/carry', async (req, res, next) => {
     try {
         const player = await Player.findOne({ where: { id: req.body.player.id } });
         const card = await Card.findOne({ where: { id: req.body.card.id } });
