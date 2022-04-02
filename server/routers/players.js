@@ -33,16 +33,11 @@ router.put('/equip', async (req, res, next) => {
     }
 });
 
-router.put('/update', async (req, res, next) => {
-    try {
-        res.send(
-            await Player.findOne({ where: { id: req.body.player.id } })
-                .set(player)
-                .save()
-        );
-    } catch (err) {
-        next(err);
-    }
+router.put('/update', (req, res, next) => {
+    Player.findOne({ where: { id: req.body.player.id } })
+        .then((player) => player.set(req.body.player).save())
+        .then((player) => res.send(player))
+        .catch(next);
 });
 
 module.exports = router;

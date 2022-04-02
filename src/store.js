@@ -117,7 +117,7 @@ export const updateCard = (card) => {
     return (dispatch) => {
         return axios({
             method: 'put',
-            url: '/card/update',
+            url: '/cards/update',
             data: { card },
         })
             .then((res) => res.data)
@@ -163,8 +163,11 @@ export const drawTreasure = () => {
 
 export const getActiveCard = () => {
     return (dispatch) => {
-        return axios
-            .get('/data/doors/active')
+        return axios({
+            method: 'put',
+            url: '/cards',
+            data: { type: 'door', status: 'active' },
+        })
             .then((res) => res.data)
             .then((activeCard) => dispatch({ type: 'GET_ACTIVE_CARD', payload: activeCard }));
     };

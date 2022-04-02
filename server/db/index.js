@@ -32,31 +32,31 @@ const syncAndSeed = () => {
             }),
 
             // creatures
-            Card.create({
-                type: 'door',
-                name: 'Ape',
-                category: 'creature',
-            }),
-            Card.create({
-                type: 'door',
-                name: 'Bear',
-                category: 'creature',
-            }),
-            Card.create({
-                type: 'door',
-                name: 'Cobra',
-                category: 'creature',
-            }),
-            Card.create({
-                type: 'door',
-                name: 'Dragon',
-                category: 'creature',
-            }),
-            Card.create({
-                type: 'door',
-                name: 'Eagle',
-                category: 'creature',
-            }),
+            // Card.create({
+            //     type: 'door',
+            //     name: 'Ape',
+            //     category: 'creature',
+            // }),
+            // Card.create({
+            //     type: 'door',
+            //     name: 'Bear',
+            //     category: 'creature',
+            // }),
+            // Card.create({
+            //     type: 'door',
+            //     name: 'Cobra',
+            //     category: 'creature',
+            // }),
+            // Card.create({
+            //     type: 'door',
+            //     name: 'Dragon',
+            //     category: 'creature',
+            // }),
+            // Card.create({
+            //     type: 'door',
+            //     name: 'Eagle',
+            //     category: 'creature',
+            // }),
 
             // races
             Card.create({

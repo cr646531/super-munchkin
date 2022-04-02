@@ -4,6 +4,7 @@ const app = express();
 
 // routers
 const { players } = require('./routers');
+const { cards } = require('./routers');
 
 const db = require('./db');
 const { Card, Player } = db.models;
@@ -14,7 +15,10 @@ const indexFile = path.join(__dirname, '..', 'public', 'index.html');
 app.use('/dist', express.static(path.join(__dirname, '../dist')));
 app.use(express.static('public'));
 app.use(require('body-parser').json());
+
+// routers
 app.use('/players', players);
+app.use('/cards', cards);
 
 // ROUTES
 app.get('/', (req, res, next) => res.sendFile(indexFile));
@@ -68,29 +72,9 @@ app.get('/data/doors/active', (req, res, next) => {
         .catch(next);
 });
 
-app.put('/card/update', async (req, res, next) => {
-    const { card } = req.body;
-
-    try {
-        const cardToUpdate = await Card.findOne({ where: { id: req.body.card.id } });
-        cardToUpdate.set(card);
-        await cardToUpdate.save();
-
-        res.send(cardToUpdate);
-    } catch (err) {
-        next(err);
-    }
-});
-
 app.get('/data/players', (req, res, next) => {
     Player.findAll()
         .then((players) => res.send(players))
-        .catch(next);
-});
-
-app.get('/data/doors', (req, res, next) => {
-    Card.findAll({ where: { type: 'door' } })
-        .then((doors) => res.send(doors))
         .catch(next);
 });
 
