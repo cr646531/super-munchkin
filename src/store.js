@@ -96,7 +96,7 @@ export const playerEquip = ({ card, player }) => {
     return (dispatch) => {
         return axios({
             method: 'put',
-            url: '/player/equip',
+            url: '/players/equip',
             data: { card, player },
         })
             .then((res) => res.data)
@@ -129,7 +129,7 @@ export const updatePlayer = (player) => {
     return (dispatch) => {
         return axios({
             method: 'put',
-            url: '/player/update',
+            url: '/players/update',
             data: { player },
         })
             .then((res) => res.data)
