@@ -15,8 +15,8 @@ const styles = {
         display: 'flex',
         flexDirection: 'row',
         overflowX: 'scroll',
-        border: `1px solid black`,
-        padding: 4,
+        // border: `1px solid black`,
+        // padding: 4,
     },
     row: {
         display: 'flex',
@@ -43,6 +43,7 @@ class Toolbelt extends Component {
             armor,
             classname,
             equipment,
+            equipped,
             footgear,
             getData,
             getDataHand,
@@ -69,10 +70,9 @@ class Toolbelt extends Component {
                     <div style={{ width: 40 }} />
                     <div style={styles.root}>
                         {equipment.map((card, index) => (
-                            <div>
+                            <div key={index}>
                                 {!card.equipped && (
                                     <div
-                                        key={index}
                                         onClick={() => {
                                             playerEquip({ card });
                                             setTimeout(() => getData({ player }), 200);
@@ -96,6 +96,21 @@ class Toolbelt extends Component {
                     <div style={{ marginRight: 8 }} />
                     <Card card={footgear ? footgear : { name: 'Footgear' }} small />
                     <div style={{ marginRight: 8 }} />
+
+                    <div style={styles.root}>
+                        {equipped.map((card, index) => (
+                            <div
+                                key={index}
+                                onClick={() => {
+                                    playerEquip({ card });
+                                    setTimeout(() => getData({ player }), 200);
+                                }}
+                                style={{ marginRight: 8 }}
+                            >
+                                <Card card={card} small />
+                            </div>
+                        ))}
+                    </div>
 
                     {/* <div style={{ marginRight: 8 }} />
                     <Card card={leftHand ? leftHand : { name: 'Hand' }} small />
@@ -164,8 +179,8 @@ class Toolbelt extends Component {
     }
 }
 
-const mapStateToProps = ({ armor, headgear, footgear, equipment, hand, player, race, classname }) => {
-    return { armor, headgear, footgear, equipment, hand, player, race, classname };
+const mapStateToProps = ({ armor, headgear, footgear, equipment, equipped, hand, player, race, classname }) => {
+    return { armor, headgear, footgear, equipment, equipped, hand, player, race, classname };
 };
 
 export default connect(mapStateToProps, { getData, getDataHand, getDataEquipment, playerCarry, playerEquip })(Toolbelt);

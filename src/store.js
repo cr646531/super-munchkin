@@ -20,6 +20,7 @@ const initialState = {
     headgear: null,
     armor: null,
     footgear: null,
+    equipped: [],
 };
 
 const reducer = (state = initialState, action) => {
