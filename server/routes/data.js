@@ -16,9 +16,34 @@ router.get('/', async (req, res, next) => {
         let player = await Player.findOne({ where: { status: 'active' } });
         let players = await Player.findAll({ order: conn.random() });
 
-        // game start - set the turn order
+        /*
+            start game
+                - set player order
+                - deal cards
+        */
         if (!player) {
             for (let i = 0; i < players.length; i++) {
+                let doors = await Card.findAll({
+                    where: { type: 'door', PlayerId: null },
+                    order: conn.random(),
+                    limit: 4,
+                });
+                let treasures = await Card.findAll({
+                    where: { type: 'treasure', PlayerId: null },
+                    order: conn.random(),
+                    limit: 4,
+                });
+
+                for (let j = 0; j < doors.length; j++) {
+                    await doors[j].setPlayer(players[i]);
+                    await doors[j].save();
+                }
+
+                for (let k = 0; k < treasures.length; k++) {
+                    await treasures[k].setPlayer(players[i]);
+                    await treasures[k].save();
+                }
+
                 if (i === 0) {
                     players[0].status = 'active';
                     await players[0].save();
