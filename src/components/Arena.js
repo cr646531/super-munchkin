@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Drawer, Typography } from '@mui/material';
 import { Card, Grid } from '@components';
-import { drawTreasure, getActiveCard, init, kickOpenDoor, lootTheRoom, updateCard, updatePlayer } from '../store';
+import { getData, kickOpenDoor, lootTheRoom, cardUpdate, playerUpdate } from '../store';
 import { connect } from 'react-redux';
 
 const styles = {
@@ -19,19 +19,7 @@ const styles = {
     },
 };
 
-const Arena = ({
-    init,
-    active,
-    doors,
-    drawTreasure,
-    kickOpenDoor,
-    lootTheRoom,
-    player,
-    treasures,
-    updateCard,
-    getActiveCard,
-    updatePlayer,
-}) => {
+const Arena = ({ getData, active, doors, kickOpenDoor, lootTheRoom, player, treasures, cardUpdate, playerUpdate }) => {
     return (
         <div
             style={{
@@ -57,7 +45,7 @@ const Arena = ({
                             } else if (player.phase === 'loot') {
                                 lootTheRoom();
                                 setTimeout(() => {
-                                    init();
+                                    getData();
                                 }, 1000);
                             }
                         }}
@@ -69,11 +57,7 @@ const Arena = ({
             <div style={{ width: 48 }} />
             <div>
                 <Card small onClick={() => console.log('graveyard')} style={{ marginBottom: 16 }} />
-                {treasures.length ? (
-                    <Card card={{ type: 'treasure' }} face='down' small onClick={drawTreasure} />
-                ) : (
-                    <div />
-                )}
+                {treasures.length ? <Card card={{ type: 'treasure' }} face='down' small /> : <div />}
             </div>
 
             {active ? (
@@ -86,25 +70,25 @@ const Arena = ({
                                 // put the card into the players hand
                                 active.status = 'inactive';
                                 active.PlayerId = player.id;
-                                updateCard(active);
+                                cardUpdate(active);
 
                                 // progress to 'Loot the Room' stage
                                 player.phase = 'loot';
-                                updatePlayer(player);
+                                playerUpdate(player);
                                 setTimeout(() => {
-                                    init();
+                                    getData();
                                 }, 300);
                             case 'class':
                                 // put the card into the players hand
                                 active.status = 'inactive';
                                 active.PlayerId = player.id;
-                                updateCard(active);
+                                cardUpdate(active);
 
                                 // progress to 'Loot the Room' stage
                                 player.phase = 'loot';
-                                updatePlayer(player);
+                                playerUpdate(player);
                                 setTimeout(() => {
-                                    init();
+                                    getData();
                                 }, 300);
                         }
                     }}
@@ -128,11 +112,9 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps, {
-    drawTreasure,
-    getActiveCard,
-    init,
+    getData,
     kickOpenDoor,
     lootTheRoom,
-    updateCard,
-    updatePlayer,
+    cardUpdate,
+    playerUpdate,
 })(Arena);

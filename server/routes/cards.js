@@ -9,21 +9,15 @@ router.use(require('body-parser').json());
 
 /* ---------- ROUTES ---------- */
 
-router.get('/', (req, res, next) => {
-    Card.findAll()
-        .then((cards) => res.send(cards))
-        .catch(next);
-});
+// router.get('/', (req, res, next) => {
+//     Card.findAll()
+//         .then((cards) => res.send(cards))
+//         .catch(next);
+// });
 
 router.put('/', (req, res, next) => {
     Card.findAll({ where: req.body })
         .then((cards) => res.send(cards))
-        .catch(next);
-});
-
-router.put('/doors', async (req, res, next) => {
-    Card.findAll({ where: { ...req, body, type: 'door' } })
-        .then((doors) => res.send(doors))
         .catch(next);
 });
 
