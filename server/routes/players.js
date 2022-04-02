@@ -28,6 +28,11 @@ router.put('/equip', async (req, res, next) => {
             await player.save();
         }
 
+        if (card.type === 'treasure') {
+            card.status = 'active';
+            await card.save();
+        }
+
         res.send(player);
     } catch (err) {
         next(err);

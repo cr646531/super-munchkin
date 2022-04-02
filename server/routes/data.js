@@ -62,10 +62,11 @@ router.get('/', async (req, res, next) => {
         }
 
         const hand = await Card.findAll({ where: { PlayerId: player.id, status: 'inactive' } });
+        const equipment = await Card.findAll({ where: { PlayerId: player.id, status: 'active', type: 'treasure' } });
         const doors = await Card.findAll({ where: { type: 'door', status: 'inactive', PlayerId: null } });
         const treasures = await Card.findAll({ where: { type: 'treasure', status: 'inactive' } });
-        const active = await Card.findOne({ where: { status: 'active' }, order: conn.random(), limit: 1 });
-        res.send({ player, players, hand, doors, treasures, active });
+        const active = await Card.findOne({ where: { type: 'door', status: 'active' } });
+        res.send({ player, players, hand, doors, treasures, active, equipment });
     } catch (err) {
         next(err);
     }
@@ -74,6 +75,13 @@ router.get('/', async (req, res, next) => {
 router.put('/hand', (req, res, next) => {
     const { player } = req.body;
     Card.findAll({ where: { PlayerId: player.id, status: 'inactive' } })
+        .then((cards) => res.send(cards))
+        .catch(next);
+});
+
+router.put('/equipment', (req, res, next) => {
+    const { player } = req.body;
+    Card.findAll({ where: { PlayerId: player.id, type: 'treasure', status: 'active' } })
         .then((cards) => res.send(cards))
         .catch(next);
 });

@@ -9,6 +9,7 @@ import { INITIAL_DOORS, INITIAL_TREASURES } from '@constants';
 const initialState = {
     players: [],
     hand: [],
+    equipment: [],
     doors: [],
     treasures: [],
     active: null,
@@ -23,6 +24,8 @@ const reducer = (state = initialState, action) => {
             return Object.assign({}, state, action.payload);
         case 'GET_DATA_HAND':
             return Object.assign({}, state, { hand: action.payload });
+        case 'GET_DATA_EQUIPMENT':
+            return Object.assign({}, state, { equipment: action.payload });
 
         // players
         case 'GET_PLAYERS':
@@ -70,6 +73,18 @@ export const getDataHand = ({ player }) => {
         })
             .then((res) => res.data)
             .then((hand) => dispatch({ type: 'GET_DATA_HAND', payload: hand }));
+    };
+};
+
+export const getDataEquipment = ({ player }) => {
+    return (dispatch) => {
+        return axios({
+            method: 'put',
+            url: '/data/equipment',
+            data: { player },
+        })
+            .then((res) => res.data)
+            .then((equipment) => dispatch({ type: 'GET_DATA_EQUIPMENT', payload: equipment }));
     };
 };
 
