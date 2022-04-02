@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Drawer, Typography } from '@mui/material';
-import { Card } from '@components';
+import { Card, Icon } from '@components';
 import { connect } from 'react-redux';
 import { getDataHand, getDataEquipment, playerEquip } from '@src/store';
 
@@ -10,6 +10,11 @@ const modals = {
 };
 
 const styles = {
+    row: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+    },
     scrollableRow: {
         display: 'flex',
         flexDirection: 'row',
@@ -31,6 +36,10 @@ class Toolbelt extends Component {
 
         return (
             <div>
+                <div style={styles.row}>
+                    <Icon type='misc' icon='chest' />
+                    <Icon type='gauntlets' icon='gauntlet_4' />
+                </div>
                 {hand.length ? (
                     <div
                         style={{ display: 'flex', flexDirection: 'row', overflowX: 'scroll', maxWidth: 400 }}
