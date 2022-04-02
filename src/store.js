@@ -128,7 +128,7 @@ export const updatePlayer = (player) => {
 export const init = () => {
     return (dispatch) => {
         return axios
-            .get('/data/init')
+            .get('/data')
             .then((res) => res.data)
             .then((data) => dispatch({ type: 'INIT', payload: data }));
     };

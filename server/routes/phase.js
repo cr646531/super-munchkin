@@ -1,11 +1,10 @@
-const { Player } = require('../db/models');
 const conn = require('../db').conn;
 
 // router
 const router = require('express').Router();
 
 // models
-const { Card } = require('../db').models;
+const { Card, Player } = require('../db').models;
 
 // middleware
 router.use(require('body-parser').json());
