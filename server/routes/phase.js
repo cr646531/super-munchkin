@@ -15,11 +15,20 @@ router.get('/', (req, res, next) => {
     res.send(400);
 });
 
-router.get('/kick', (req, res, next) => {
-    Card.findOne({ where: { type: 'door', PlayerId: null } })
-        .then((card) => card.set({ status: 'active' }).save())
-        .then((card) => res.send(card))
-        .catch(next);
+router.put('/kick', async (req, res, next) => {
+    try {
+        const player = await Player.findOne({ where: { id: req.body.player.id } });
+        player.phase = 'resolve';
+        await player.save();
+
+        const card = await Card.findOne({ where: { type: 'door', PlayerId: null } });
+        card.status = 'active';
+        await card.save();
+
+        res.send({ card, player });
+    } catch (err) {
+        next(err);
+    }
 });
 
 router.get('/loot', async (req, res, next) => {
