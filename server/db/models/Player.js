@@ -11,6 +11,10 @@ const Player = conn.define('Player', {
     speed: {
         type: DataTypes.INTEGER,
     },
+    status: {
+        type: DataTypes.STRING,
+        defaultValue: 'inactive',
+    },
 });
 
 module.exports = Player;

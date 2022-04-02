@@ -5,15 +5,13 @@ const { Card, Player, Remote } = models;
 Card.belongsTo(Player);
 Player.hasMany(Card);
 Remote.belongsTo(Player);
+Player.belongsTo(Player);
 
 const syncAndSeed = () => {
     console.log('database syncing and seeding');
     return conn.sync({ force: true }).then(() => {
         return Promise.all([
             // players
-            Player.create({
-                name: 'Graveyard',
-            }),
             Player.create({
                 name: 'Buckets',
                 level: 1,
