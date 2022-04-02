@@ -23,6 +23,10 @@ const Player = conn.define('Player', {
         type: DataTypes.STRING,
         defaultValue: 'Human',
     },
+    class: {
+        type: DataTypes.STRING,
+        defaultValue: null,
+    },
 });
 
 module.exports = Player;
