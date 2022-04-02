@@ -16,7 +16,7 @@ const styles = {
 const Arena = ({ getData, active, doors, kickOpenDoor, lootTheRoom, player, treasures, cardUpdate, playerUpdate }) => {
     const onClickDeck = () => {
         if (player.phase === 'kick') {
-            kickOpenDoor();
+            kickOpenDoor(player);
         } else if (player.phase === 'loot') {
             lootTheRoom();
             setTimeout(() => {

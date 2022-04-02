@@ -1,4 +1,3 @@
-// import packages
 import { createStore, applyMiddleware, combineReducers, bindActionCreators } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
@@ -18,10 +17,6 @@ const initialState = {
 };
 
 const reducer = (state = initialState, action) => {
-    let deckCopy = null;
-    let topCard = null;
-    let handCopy = null;
-
     switch (action.type) {
         // data
         case 'GET_DATA':
@@ -43,7 +38,7 @@ const reducer = (state = initialState, action) => {
 
         // phase
         case 'KICK_OPEN_DOOR':
-            return Object.assign({}, state, { active: action.payload });
+            return Object.assign({}, state, { active: action.payload.card, player: action.payload.player });
         case 'LOOT_THE_ROOM':
             return Object.assign({}, state, { player: action.payload });
 
@@ -129,12 +124,15 @@ export const cardUpdate = (card) => {
 
 /* ---------- PHASE ---------- */
 
-export const kickOpenDoor = () => {
+export const kickOpenDoor = (player) => {
     return (dispatch) => {
-        return axios
-            .get('/phase/kick')
+        return axios({
+            method: 'put',
+            url: '/phase/kick',
+            data: { player },
+        })
             .then((res) => res.data)
-            .then((card) => dispatch({ type: 'KICK_OPEN_DOOR', payload: card }));
+            .then((data) => dispatch({ type: 'KICK_OPEN_DOOR', payload: data }));
     };
 };
 
