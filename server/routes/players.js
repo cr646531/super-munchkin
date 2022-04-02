@@ -17,23 +17,45 @@ router.get('/', (req, res, next) => {
 
 router.put('/carry', async (req, res, next) => {
     try {
-        const player = await Player.findOne({ where: { id: req.body.player.id } });
         const card = await Card.findOne({ where: { id: req.body.card.id } });
-
-        if (card.category === 'race' || card.category === 'class') {
-            card.equipped = true;
-            await card.save();
-            if (card.category === 'race') player.race = card.name;
-            if (card.category === 'class') player.class = card.name;
-            await player.save();
-        }
 
         if (card.type === 'treasure') {
             card.status = 'active';
             await card.save();
         }
+    } catch (err) {
+        next(err);
+    }
+});
 
-        res.send(player);
+router.put('/equip', async (req, res, next) => {
+    try {
+        const card = await Card.findOne({ where: { id: req.body.card.id } });
+        const cardToUnequip = await Card.findOne({
+            where: { PlayerId: req.body.card.PlayerId, category: req.body.card.category, equipped: true },
+        });
+
+        if (card.category === 'race' || card.category === 'class') {
+            if (cardToUnequip) {
+                cardToUnequip.status = 'dead';
+                cardToUnequip.equipped = false;
+                await cardToUnequip.save();
+            }
+
+            card.status = 'used';
+            card.equipped = true;
+            await card.save();
+        }
+
+        if (card.type === 'treasure') {
+            if (cardToUnequip) {
+                cardToUnequip.equipped = false;
+                await cardToUnequip.save();
+            }
+
+            card.equipped = true;
+            await card.save();
+        }
     } catch (err) {
         next(err);
     }
