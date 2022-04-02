@@ -1,5 +1,6 @@
 import React from 'react';
 import { Typography } from '@mui/material';
+import { Icon } from '@components';
 
 const styles = {};
 
@@ -31,7 +32,7 @@ export default class Card extends React.Component {
             );
         }
 
-        const { type, name, category, status } = card;
+        const { type, name, category, status, icon, bonus } = card;
 
         return (
             <div style={style}>
@@ -55,6 +56,13 @@ export default class Card extends React.Component {
                         }}
                     >
                         <Typography variant='p'>{name}</Typography>
+                        <div style={{ marginBottom: 16 }} />
+                        {category && icon ? <Icon category={category} icon={icon} small={small} /> : <div />}
+                        {bonus && (
+                            <div style={{ marginTop: 16 }}>
+                                <Typography variant='h5'>+{bonus}</Typography>
+                            </div>
+                        )}
                     </div>
                 </div>
                 {/* <div style={{ height: '100%', display: 'flex', flexDirection: 'column', padding: 8 }}>

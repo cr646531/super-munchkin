@@ -15,6 +15,12 @@ const Card = conn.define('Card', {
         type: DataTypes.STRING,
         defaultValue: 'inactive',
     },
+    icon: {
+        type: DataTypes.STRING,
+    },
+    bonus: {
+        type: DataTypes.INTEGER,
+    },
 });
 
 module.exports = Card;
