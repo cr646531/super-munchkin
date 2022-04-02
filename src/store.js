@@ -23,6 +23,8 @@ const reducer = (state = initialState, action) => {
     let handCopy = null;
 
     switch (action.type) {
+        case 'LOOT_THE_ROOM':
+            return Object.assign({}, state, { player: action.payload });
         case 'UPDATE_PLAYER':
             return Object.assign({}, state, { player: action.payload });
         case 'UPDATE_CARD':
@@ -73,6 +75,15 @@ const reducer = (state = initialState, action) => {
 export default createStore(reducer, composeWithDevTools(applyMiddleware(thunkMiddleware, logger)));
 
 // actions
+
+export const lootTheRoom = () => {
+    return (dispatch) => {
+        return axios
+            .get('/phase/loot')
+            .then((res) => res.data)
+            .then((player) => dispatch({ type: 'LOOT_THE_ROOM', payload: player }));
+    };
+};
 
 export const updateCard = (card) => {
     return (dispatch) => {

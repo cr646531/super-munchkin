@@ -1,7 +1,16 @@
 import React, { Component } from 'react';
 import { Button, Drawer, Typography } from '@mui/material';
 import { Card, Grid } from '@components';
-import { drawDoor, drawTreasure, getActiveCard, init, kickOpenDoor, updateCard, updatePlayer } from '../store';
+import {
+    drawDoor,
+    drawTreasure,
+    getActiveCard,
+    init,
+    kickOpenDoor,
+    lootTheRoom,
+    updateCard,
+    updatePlayer,
+} from '../store';
 import { connect } from 'react-redux';
 
 const styles = {
@@ -25,15 +34,13 @@ const Arena = ({
     doors,
     drawTreasure,
     kickOpenDoor,
+    lootTheRoom,
     player,
     treasures,
     updateCard,
     getActiveCard,
     updatePlayer,
 }) => {
-    const _updateCard = (card) => updateCard(card);
-    const _getActiveCard = () => getActiveCard();
-
     return (
         <div
             style={{
@@ -46,18 +53,41 @@ const Arena = ({
         >
             <div>
                 <Card small onClick={() => console.log('graveyard')} style={{ marginBottom: 16 }} />
-                {doors.length ? <Card type='door' face='down' small onClick={kickOpenDoor} /> : <div />}
+                {doors.length ? (
+                    <Card
+                        card={{
+                            type: 'door',
+                        }}
+                        face='down'
+                        small
+                        onClick={() => {
+                            if (player.phase === 'kick') {
+                                kickOpenDoor();
+                            } else if (player.phase === 'loot') {
+                                lootTheRoom();
+                                setTimeout(() => {
+                                    init();
+                                }, 1000);
+                            }
+                        }}
+                    />
+                ) : (
+                    <div />
+                )}
             </div>
             <div style={{ width: 48 }} />
             <div>
                 <Card small onClick={() => console.log('graveyard')} style={{ marginBottom: 16 }} />
-                {treasures.length ? <Card type='treasure' face='down' small onClick={drawTreasure} /> : <div />}
+                {treasures.length ? (
+                    <Card card={{ type: 'treasure' }} face='down' small onClick={drawTreasure} />
+                ) : (
+                    <div />
+                )}
             </div>
 
             {active ? (
                 <Card
-                    type={active.type}
-                    name={active.name}
+                    card={active}
                     medium
                     onClick={() => {
                         switch (active.category) {
@@ -100,6 +130,7 @@ export default connect(mapStateToProps, {
     getActiveCard,
     init,
     kickOpenDoor,
+    lootTheRoom,
     updateCard,
     updatePlayer,
 })(Arena);
