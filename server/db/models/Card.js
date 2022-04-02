@@ -21,6 +21,10 @@ const Card = conn.define('Card', {
     bonus: {
         type: DataTypes.INTEGER,
     },
+    equipped: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+    },
 });
 
 module.exports = Card;

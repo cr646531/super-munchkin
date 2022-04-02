@@ -30,7 +30,7 @@ const reducer = (state = initialState, action) => {
         // players
         case 'GET_PLAYERS':
             return Object.assign({}, state, { players: action.payload });
-        case 'PLAYER_EQUIP':
+        case 'PLAYER_CARRY':
             return Object.assign({}, state, { player: action.payload });
         case 'PLAYER_UPDATE':
             return Object.assign({}, state, { player: action.payload });
@@ -99,15 +99,15 @@ export const getPlayers = () => {
     };
 };
 
-export const playerEquip = ({ card, player }) => {
+export const playerCarry = ({ card, player }) => {
     return (dispatch) => {
         return axios({
             method: 'put',
-            url: '/players/equip',
+            url: '/players/carry',
             data: { card, player },
         })
             .then((res) => res.data)
-            .then((player) => dispatch({ type: 'PLAYER_EQUIP', payload: player }));
+            .then((player) => dispatch({ type: 'PLAYER_CARRY', payload: player }));
     };
 };
 
