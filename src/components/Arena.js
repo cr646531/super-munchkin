@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Drawer, Typography } from '@mui/material';
 import { Card, Grid } from '@components';
-import { drawDoor, drawTreasure, getActiveCard, init, kickOpenDoor, updateCard } from '../store';
+import { drawDoor, drawTreasure, getActiveCard, init, kickOpenDoor, updateCard, updatePlayer } from '../store';
 import { connect } from 'react-redux';
 
 const styles = {
@@ -19,7 +19,18 @@ const styles = {
     },
 };
 
-const Arena = ({ init, active, doors, drawTreasure, kickOpenDoor, player, treasures, updateCard, getActiveCard }) => {
+const Arena = ({
+    init,
+    active,
+    doors,
+    drawTreasure,
+    kickOpenDoor,
+    player,
+    treasures,
+    updateCard,
+    getActiveCard,
+    updatePlayer,
+}) => {
     const _updateCard = (card) => updateCard(card);
     const _getActiveCard = () => getActiveCard();
 
@@ -49,12 +60,20 @@ const Arena = ({ init, active, doors, drawTreasure, kickOpenDoor, player, treasu
                     name={active.name}
                     medium
                     onClick={() => {
-                        active.status = 'inactive';
-                        active.PlayerId = player.id;
-                        updateCard(active);
-                        setTimeout(() => {
-                            init();
-                        }, 300);
+                        switch (active.category) {
+                            case 'race':
+                                // put the card into the players hand
+                                active.status = 'inactive';
+                                active.PlayerId = player.id;
+                                updateCard(active);
+
+                                // progress to 'Loot the Room' stage
+                                player.phase = 'loot';
+                                updatePlayer(player);
+                                setTimeout(() => {
+                                    init();
+                                }, 300);
+                        }
                     }}
                     style={{ marginLeft: 160 }}
                 />
@@ -75,6 +94,12 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps, { drawDoor, drawTreasure, getActiveCard, init, kickOpenDoor, updateCard })(
-    Arena
-);
+export default connect(mapStateToProps, {
+    drawDoor,
+    drawTreasure,
+    getActiveCard,
+    init,
+    kickOpenDoor,
+    updateCard,
+    updatePlayer,
+})(Arena);

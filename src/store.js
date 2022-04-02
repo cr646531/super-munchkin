@@ -23,6 +23,8 @@ const reducer = (state = initialState, action) => {
     let handCopy = null;
 
     switch (action.type) {
+        case 'UPDATE_PLAYER':
+            return Object.assign({}, state, { player: action.payload });
         case 'UPDATE_CARD':
             return Object.assign({}, state, { updatedCard: action.payload });
         case 'INIT':
@@ -84,6 +86,18 @@ export const updateCard = (card) => {
     };
 };
 
+export const updatePlayer = (player) => {
+    return (dispatch) => {
+        return axios({
+            method: 'put',
+            url: '/player/update',
+            data: { player },
+        })
+            .then((res) => res.data)
+            .then((card) => dispatch({ type: 'UPDATE_PLAYER', payload: player }));
+    };
+};
+
 export const init = () => {
     return (dispatch) => {
         return axios
@@ -96,7 +110,7 @@ export const init = () => {
 export const kickOpenDoor = () => {
     return (dispatch) => {
         return axios
-            .get('/data/doors/kick')
+            .get('/phase/kick')
             .then((res) => res.data)
             .then((card) => dispatch({ type: 'KICK_OPEN_DOOR', payload: card }));
     };
