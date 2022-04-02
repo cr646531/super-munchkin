@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { init } from '../../store';
+import { getData } from '../../store';
 
 import { Arena, Toolbelt } from '@components';
 
@@ -28,7 +28,7 @@ const styles = {
 
 class MainScreen extends Component {
     componentDidMount() {
-        this.props.init();
+        this.props.getData();
     }
 
     render() {
@@ -51,4 +51,4 @@ const mapStateToProps = ({ players }) => {
     };
 };
 
-export default connect(mapStateToProps, { init })(MainScreen);
+export default connect(mapStateToProps, { getData })(MainScreen);
