@@ -1,14 +1,20 @@
 import React, { Component } from 'react';
 import { Button, Drawer, Typography } from '@mui/material';
-import { Card } from '@components';
+import { Card, Icon } from '@components';
 import { connect } from 'react-redux';
-import { getDataHand, playerEquip } from '@src/store';
+import { getDataHand, getDataEquipment, playerEquip } from '@src/store';
 
 const modals = {
     HAND: 'HAND',
+    EQUIPMENT: 'EQUIPMENT',
 };
 
 const styles = {
+    row: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+    },
     scrollableRow: {
         display: 'flex',
         flexDirection: 'row',
@@ -25,17 +31,36 @@ class Toolbelt extends Component {
     }
 
     render() {
-        const { getDataHand, hand, player, playerEquip } = this.props;
+        const { equipment, getDataHand, getDataEquipment, hand, player, playerEquip } = this.props;
         const { modalOpen } = this.state;
 
         return (
             <div>
+                <div style={styles.row}>
+                    <Icon type='misc' icon='chest' />
+                    <Icon type='gauntlets' icon='gauntlet_4' />
+                </div>
                 {hand.length ? (
                     <div
                         style={{ display: 'flex', flexDirection: 'row', overflowX: 'scroll', maxWidth: 400 }}
                         onClick={() => this.setState({ modalOpen: modals.HAND })}
                     >
                         {hand.map((card, index) => (
+                            <div key={index} style={{ marginRight: -60 }}>
+                                <Card card={card} small />
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <div />
+                )}
+
+                {equipment.length ? (
+                    <div
+                        style={{ display: 'flex', flexDirection: 'row', overflowX: 'scroll', maxWidth: 400 }}
+                        onClick={() => this.setState({ modalOpen: modals.EQUIPMENT })}
+                    >
+                        {equipment.map((card, index) => (
                             <div key={index} style={{ marginRight: -60 }}>
                                 <Card card={card} small />
                             </div>
@@ -61,7 +86,7 @@ class Toolbelt extends Component {
                     open={modalOpen === modals.HAND}
                     onClose={() => this.setState({ modalOpen: null })}
                 >
-                    <div style={styles.scrollableRow} onClick={() => this.setState({ modalOpen: modals.HAND })}>
+                    <div style={styles.scrollableRow}>
                         {hand.map((card, index) => (
                             <div
                                 key={index}
@@ -70,6 +95,36 @@ class Toolbelt extends Component {
                                     if (card.category === 'race' || card.category === 'class') {
                                         playerEquip({ card, player });
                                         setTimeout(() => getDataHand({ player }), 100);
+                                    } else if (card.type === 'treasure') {
+                                        playerEquip({ card, player });
+                                        setTimeout(() => getDataEquipment({ player }), 100);
+                                        setTimeout(() => getDataHand({ player }), 200);
+                                    }
+                                }}
+                            >
+                                <Card key={index} card={card} />
+                            </div>
+                        ))}
+                    </div>
+                </Drawer>
+                <Drawer
+                    anchor='bottom'
+                    open={modalOpen === modals.EQUIPMENT}
+                    onClose={() => this.setState({ modalOpen: null })}
+                >
+                    <div style={styles.scrollableRow}>
+                        {equipment.map((card, index) => (
+                            <div
+                                key={index}
+                                style={{ margin: 24 }}
+                                onClick={() => {
+                                    if (card.category === 'race' || card.category === 'class') {
+                                        playerEquip({ card, player });
+                                        setTimeout(() => getDataHand({ player }), 100);
+                                    } else if (card.type === 'treasure') {
+                                        playerEquip({ card, player });
+                                        setTimeout(() => getDataEquipment({ player }), 100);
+                                        setTimeout(() => getDataHand({ player }), 200);
                                     }
                                 }}
                             >
@@ -83,8 +138,8 @@ class Toolbelt extends Component {
     }
 }
 
-const mapStateToProps = ({ hand, player }) => {
-    return { hand, player };
+const mapStateToProps = ({ equipment, hand, player }) => {
+    return { equipment, hand, player };
 };
 
-export default connect(mapStateToProps, { getDataHand, playerEquip })(Toolbelt);
+export default connect(mapStateToProps, { getDataHand, getDataEquipment, playerEquip })(Toolbelt);
