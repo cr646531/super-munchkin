@@ -15,6 +15,10 @@ const Player = conn.define('Player', {
         type: DataTypes.STRING,
         defaultValue: 'inactive',
     },
+    phase: {
+        type: DataTypes.STRING,
+        defaultValue: 'kick',
+    },
 });
 
 module.exports = Player;

@@ -61,12 +61,27 @@ app.put('/card/update', async (req, res, next) => {
     const { card } = req.body;
 
     try {
-        const cardToUpdate = await Card.findOne({ where: { id: req.body.card.id }, order: conn.random(), limit: 1 });
+        const cardToUpdate = await Card.findOne({ where: { id: req.body.card.id } });
         cardToUpdate.set(card);
         console.log('cardToUpdate: ', cardToUpdate);
         await cardToUpdate.save();
 
-        res.send(card);
+        res.send(cardToUpdate);
+    } catch (err) {
+        next(err);
+    }
+});
+
+app.put('/player/update', async (req, res, next) => {
+    const { player } = req.body;
+
+    try {
+        const playerToUpdate = await Player.findOne({ where: { id: req.body.player.id } });
+        playerToUpdate.set(player);
+        console.log('playerToUpdate: ', playerToUpdate);
+        await playerToUpdate.save();
+
+        res.send(playerToUpdate);
     } catch (err) {
         next(err);
     }
@@ -90,13 +105,16 @@ app.get('/data/treasures', (req, res, next) => {
         .catch(next);
 });
 
-app.get('/data/doors/kick', async (req, res, next) => {
+app.get('/phase/kick', async (req, res, next) => {
     try {
+        // kick in the door
         const topCard = await Card.findOne({ where: { type: 'door', PlayerId: null }, order: conn.random(), limit: 1 });
-        const player = await Player.findOne({ where: { name: 'Buckets' } });
-
         topCard.status = 'active';
         await topCard.save();
+
+        // advance to next stage
+        const player = await Player.findOne({ where: { status: 'active' } });
+        player.phase = 'resolve';
 
         res.send(topCard);
     } catch (err) {
