@@ -6,8 +6,6 @@ Card.belongsTo(Player);
 Player.hasMany(Card);
 Remote.belongsTo(Player);
 Player.belongsTo(Player);
-Player.hasOne(Card, { foreignKey: 'raceId' });
-Player.hasOne(Card, { foreignKey: 'classId' });
 
 // const shields = [];
 //
@@ -107,18 +105,18 @@ const syncAndSeed = () => {
             Card.create({ type: 'treasure', name: 'Shield', category: 'shields', bonus: 3, icon: 'shield_12' }),
 
             // boots
-            Card.create({ type: 'treasure', name: 'Boots', category: 'boots', bonus: 1, icon: 'boots_1' }),
-            Card.create({ type: 'treasure', name: 'Boots', category: 'boots', bonus: 1, icon: 'boots_2' }),
-            Card.create({ type: 'treasure', name: 'Boots', category: 'boots', bonus: 1, icon: 'boots_3' }),
-            Card.create({ type: 'treasure', name: 'Boots', category: 'boots', bonus: 1, icon: 'boots_4' }),
-            Card.create({ type: 'treasure', name: 'Boots', category: 'boots', bonus: 2, icon: 'boots_5' }),
-            Card.create({ type: 'treasure', name: 'Boots', category: 'boots', bonus: 2, icon: 'boots_6' }),
-            Card.create({ type: 'treasure', name: 'Boots', category: 'boots', bonus: 2, icon: 'boots_7' }),
-            Card.create({ type: 'treasure', name: 'Boots', category: 'boots', bonus: 2, icon: 'boots_8' }),
-            Card.create({ type: 'treasure', name: 'Boots', category: 'boots', bonus: 3, icon: 'boots_9' }),
-            Card.create({ type: 'treasure', name: 'Boots', category: 'boots', bonus: 3, icon: 'boots_10' }),
-            Card.create({ type: 'treasure', name: 'Boots', category: 'boots', bonus: 3, icon: 'boots_11' }),
-            Card.create({ type: 'treasure', name: 'Boots', category: 'boots', bonus: 3, icon: 'boots_12' }),
+            Card.create({ type: 'treasure', name: 'Boots', category: 'footgear', bonus: 1, icon: 'boots_1' }),
+            Card.create({ type: 'treasure', name: 'Boots', category: 'footgear', bonus: 1, icon: 'boots_2' }),
+            Card.create({ type: 'treasure', name: 'Boots', category: 'footgear', bonus: 1, icon: 'boots_3' }),
+            Card.create({ type: 'treasure', name: 'Boots', category: 'footgear', bonus: 1, icon: 'boots_4' }),
+            Card.create({ type: 'treasure', name: 'Boots', category: 'footgear', bonus: 2, icon: 'boots_5' }),
+            Card.create({ type: 'treasure', name: 'Boots', category: 'footgear', bonus: 2, icon: 'boots_6' }),
+            Card.create({ type: 'treasure', name: 'Boots', category: 'footgear', bonus: 2, icon: 'boots_7' }),
+            Card.create({ type: 'treasure', name: 'Boots', category: 'footgear', bonus: 2, icon: 'boots_8' }),
+            Card.create({ type: 'treasure', name: 'Boots', category: 'footgear', bonus: 3, icon: 'boots_9' }),
+            Card.create({ type: 'treasure', name: 'Boots', category: 'footgear', bonus: 3, icon: 'boots_10' }),
+            Card.create({ type: 'treasure', name: 'Boots', category: 'footgear', bonus: 3, icon: 'boots_11' }),
+            Card.create({ type: 'treasure', name: 'Boots', category: 'footgear', bonus: 3, icon: 'boots_12' }),
 
             // armor
             Card.create({ type: 'treasure', name: 'Armor', category: 'armor', bonus: 1, icon: 'armor_1' }),
@@ -135,18 +133,18 @@ const syncAndSeed = () => {
             Card.create({ type: 'treasure', name: 'Armor', category: 'armor', bonus: 3, icon: 'armor_12' }),
 
             // headgear
-            Card.create({ type: 'treasure', name: 'Helmet', category: 'helmets', bonus: 1, icon: 'helmet_1' }),
-            Card.create({ type: 'treasure', name: 'Helmet', category: 'helmets', bonus: 1, icon: 'helmet_2' }),
-            Card.create({ type: 'treasure', name: 'Helmet', category: 'helmets', bonus: 1, icon: 'helmet_3' }),
-            Card.create({ type: 'treasure', name: 'Helmet', category: 'helmets', bonus: 1, icon: 'helmet_4' }),
-            Card.create({ type: 'treasure', name: 'Helmet', category: 'helmets', bonus: 2, icon: 'helmet_5' }),
-            Card.create({ type: 'treasure', name: 'Helmet', category: 'helmets', bonus: 2, icon: 'helmet_6' }),
-            Card.create({ type: 'treasure', name: 'Helmet', category: 'helmets', bonus: 2, icon: 'helmet_7' }),
-            Card.create({ type: 'treasure', name: 'Helmet', category: 'helmets', bonus: 2, icon: 'helmet_8' }),
-            Card.create({ type: 'treasure', name: 'Helmet', category: 'helmets', bonus: 3, icon: 'helmet_9' }),
-            Card.create({ type: 'treasure', name: 'Helmet', category: 'helmets', bonus: 3, icon: 'helmet_10' }),
-            Card.create({ type: 'treasure', name: 'Helmet', category: 'helmets', bonus: 3, icon: 'helmet_11' }),
-            Card.create({ type: 'treasure', name: 'Helmet', category: 'helmets', bonus: 3, icon: 'helmet_12' }),
+            Card.create({ type: 'treasure', name: 'Helmet', category: 'headgear', bonus: 1, icon: 'helmet_1' }),
+            Card.create({ type: 'treasure', name: 'Helmet', category: 'headgear', bonus: 1, icon: 'helmet_2' }),
+            Card.create({ type: 'treasure', name: 'Helmet', category: 'headgear', bonus: 1, icon: 'helmet_3' }),
+            Card.create({ type: 'treasure', name: 'Helmet', category: 'headgear', bonus: 1, icon: 'helmet_4' }),
+            Card.create({ type: 'treasure', name: 'Helmet', category: 'headgear', bonus: 2, icon: 'helmet_5' }),
+            Card.create({ type: 'treasure', name: 'Helmet', category: 'headgear', bonus: 2, icon: 'helmet_6' }),
+            Card.create({ type: 'treasure', name: 'Helmet', category: 'headgear', bonus: 2, icon: 'helmet_7' }),
+            Card.create({ type: 'treasure', name: 'Helmet', category: 'headgear', bonus: 2, icon: 'helmet_8' }),
+            Card.create({ type: 'treasure', name: 'Helmet', category: 'headgear', bonus: 3, icon: 'helmet_9' }),
+            Card.create({ type: 'treasure', name: 'Helmet', category: 'headgear', bonus: 3, icon: 'helmet_10' }),
+            Card.create({ type: 'treasure', name: 'Helmet', category: 'headgear', bonus: 3, icon: 'helmet_11' }),
+            Card.create({ type: 'treasure', name: 'Helmet', category: 'headgear', bonus: 3, icon: 'helmet_12' }),
 
             // swords
             Card.create({ type: 'treasure', name: 'Sword', category: 'sword', bonus: 1, icon: 'sword_01' }),

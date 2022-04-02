@@ -62,14 +62,32 @@ router.get('/', async (req, res, next) => {
         }
 
         const hand = await Card.findAll({ where: { PlayerId: player.id, status: 'inactive' } });
-        const equipment = await Card.findAll({ where: { PlayerId: player.id, status: 'active', type: 'treasure' } });
+        const equipment = await Card.findAll({
+            where: { PlayerId: player.id, status: 'active', type: 'treasure' },
+        });
         const doors = await Card.findAll({ where: { type: 'door', status: 'inactive', PlayerId: null } });
         const treasures = await Card.findAll({ where: { type: 'treasure', status: 'inactive' } });
         const active = await Card.findOne({ where: { type: 'door', status: 'active' } });
         const race = await Card.findOne({ where: { PlayerId: player.id, category: 'race', equipped: true } });
         const classname = await Card.findOne({ where: { PlayerId: player.id, category: 'class', equipped: true } });
+        const headgear = await Card.findOne({ where: { PlayerId: player.id, category: 'headgear', equipped: true } });
+        const armor = await Card.findOne({ where: { PlayerId: player.id, category: 'armor', equipped: true } });
+        const footgear = await Card.findOne({ where: { PlayerId: player.id, category: 'footgear', equipped: true } });
 
-        res.send({ player, players, hand, doors, treasures, active, equipment, race, classname });
+        res.send({
+            player,
+            players,
+            hand,
+            doors,
+            treasures,
+            active,
+            equipment,
+            race,
+            classname,
+            armor,
+            headgear,
+            footgear,
+        });
     } catch (err) {
         next(err);
     }

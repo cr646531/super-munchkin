@@ -17,6 +17,9 @@ const initialState = {
     updatedCard: null,
     race: null,
     classname: null,
+    headgear: null,
+    armor: null,
+    footgear: null,
 };
 
 const reducer = (state = initialState, action) => {
@@ -34,6 +37,8 @@ const reducer = (state = initialState, action) => {
             return Object.assign({}, state, { players: action.payload });
         case 'PLAYER_CARRY':
             return Object.assign({}, state, { player: action.payload });
+        case 'PLAYER_EQUIP':
+            return Object.assign({}, state, {});
         case 'PLAYER_UPDATE':
             return Object.assign({}, state, { player: action.payload });
 
@@ -101,15 +106,27 @@ export const getPlayers = () => {
     };
 };
 
-export const playerCarry = ({ card, player }) => {
+export const playerCarry = ({ card }) => {
     return (dispatch) => {
         return axios({
             method: 'put',
             url: '/players/carry',
-            data: { card, player },
+            data: { card },
         })
             .then((res) => res.data)
-            .then((player) => dispatch({ type: 'PLAYER_CARRY', payload: player }));
+            .then(() => dispatch({ type: 'PLAYER_CARRY' }));
+    };
+};
+
+export const playerEquip = ({ card }) => {
+    return (dispatch) => {
+        return axios({
+            method: 'put',
+            url: '/players/equip',
+            data: { card },
+        })
+            .then((res) => res.data)
+            .then(() => dispatch({ type: 'PLAYER_EQUIP' }));
     };
 };
 

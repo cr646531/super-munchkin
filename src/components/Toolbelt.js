@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Button, Drawer, Typography } from '@mui/material';
 import { Card, Icon } from '@components';
 import { connect } from 'react-redux';
-import { getData, getDataHand, getDataEquipment, playerCarry } from '@src/store';
+import { getData, getDataHand, getDataEquipment, playerCarry, playerEquip } from '@src/store';
 
 const modals = {
     HAND: 'HAND',
@@ -10,6 +10,14 @@ const modals = {
 };
 
 const styles = {
+    root: {
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'row',
+        overflowX: 'scroll',
+        border: `1px solid black`,
+        padding: 4,
+    },
     row: {
         display: 'flex',
         flexDirection: 'row',
@@ -31,24 +39,27 @@ class Toolbelt extends Component {
     }
 
     render() {
-        const { classname, equipment, getData, getDataHand, getDataEquipment, hand, player, playerCarry, race } =
-            this.props;
+        const {
+            armor,
+            classname,
+            equipment,
+            footgear,
+            getData,
+            getDataHand,
+            getDataEquipment,
+            hand,
+            headgear,
+            player,
+            playerCarry,
+            playerEquip,
+            race,
+        } = this.props;
         const { modalOpen } = this.state;
 
         return (
             <div>
                 <div style={{ display: 'flex', flexDirection: 'row' }}>
-                    <div
-                        style={{
-                            flex: 1,
-                            display: 'flex',
-                            flexDirection: 'row',
-                            overflowX: 'scroll',
-                            border: `1px solid black`,
-                            padding: 4,
-                        }}
-                        onClick={() => this.setState({ modalOpen: modals.HAND })}
-                    >
+                    <div style={styles.root} onClick={() => this.setState({ modalOpen: modals.HAND })}>
                         {hand.map((card, index) => (
                             <div key={index} style={{ marginRight: 8 }}>
                                 <Card card={card} small />
@@ -56,20 +67,20 @@ class Toolbelt extends Component {
                         ))}
                     </div>
                     <div style={{ width: 40 }} />
-                    <div
-                        style={{
-                            flex: 1,
-                            display: 'flex',
-                            flexDirection: 'row',
-                            overflowX: 'scroll',
-                            border: `1px solid black`,
-                            padding: 4,
-                        }}
-                        // onClick={() => this.setState({ modalOpen: modals.EQUIPMENT })}
-                    >
+                    <div style={styles.root}>
                         {equipment.map((card, index) => (
-                            <div key={index}>
-                                <Card card={card} small />
+                            <div>
+                                {!card.equipped && (
+                                    <div
+                                        key={index}
+                                        onClick={() => {
+                                            playerEquip({ card });
+                                            setTimeout(() => getData({ player }), 200);
+                                        }}
+                                    >
+                                        <Card card={card} small />
+                                    </div>
+                                )}
                             </div>
                         ))}
                     </div>
@@ -79,15 +90,17 @@ class Toolbelt extends Component {
                     <div style={{ marginRight: 8 }} />
                     <Card card={classname ? classname : { name: 'Class' }} small />
                     <div style={{ marginRight: 8 }} />
-                    <Card card={player && player.headgear ? player.headgear : { name: 'Headgear' }} small />
+                    <Card card={headgear ? headgear : { name: 'Headgear' }} small />
                     <div style={{ marginRight: 8 }} />
-                    <Card card={player && player.armor ? player.armor : { name: 'Armor' }} small />
+                    <Card card={armor ? armor : { name: 'Armor' }} small />
                     <div style={{ marginRight: 8 }} />
-                    <Card card={player && player.footgear ? player.footgear : { name: 'Footgear' }} small />
+                    <Card card={footgear ? footgear : { name: 'Footgear' }} small />
                     <div style={{ marginRight: 8 }} />
-                    <Card card={player && player.leftHand ? player.leftHand : { name: 'Hand' }} small />
+
+                    {/* <div style={{ marginRight: 8 }} />
+                    <Card card={leftHand ? leftHand : { name: 'Hand' }} small />
                     <div style={{ marginRight: 8 }} />
-                    <Card card={player && player.rightHand ? player.rightHand : { name: 'Hand' }} small />
+                    <Card card={rightHand ? rightHand : { name: 'Hand' }} small /> */}
                 </div>
                 {/* {player && (
                     <div>
@@ -113,12 +126,11 @@ class Toolbelt extends Component {
                                 style={{ margin: 24 }}
                                 onClick={() => {
                                     if (card.category === 'race' || card.category === 'class') {
-                                        playerCarry({ card, player });
+                                        playerEquip({ card });
                                         setTimeout(() => getData({ player }), 100);
                                     } else if (card.type === 'treasure') {
-                                        playerCarry({ card, player });
-                                        setTimeout(() => getDataEquipment({ player }), 100);
-                                        setTimeout(() => getData({ player }), 200);
+                                        playerCarry({ card });
+                                        setTimeout(() => getData({ player }), 100);
                                     }
                                 }}
                             >
@@ -134,21 +146,15 @@ class Toolbelt extends Component {
                 >
                     <div style={styles.scrollableRow}>
                         {equipment.map((card, index) => (
-                            <div
-                                key={index}
-                                style={{ margin: 24 }}
-                                onClick={() => {
-                                    if (card.category === 'race' || card.category === 'class') {
-                                        playerCarry({ card, player });
-                                        setTimeout(() => getDataHand({ player }), 100);
-                                    } else if (card.type === 'treasure') {
-                                        playerCarry({ card, player });
-                                        setTimeout(() => getDataEquipment({ player }), 100);
-                                        setTimeout(() => getDataHand({ player }), 200);
-                                    }
-                                }}
-                            >
-                                <Card key={index} card={card} />
+                            <div key={index} style={{ margin: 24 }}>
+                                <Card
+                                    key={index}
+                                    card={card}
+                                    onClick={() => {
+                                        playerEquip({ card });
+                                        setTimeout(() => getData({ player }), 200);
+                                    }}
+                                />
                             </div>
                         ))}
                     </div>
@@ -158,8 +164,8 @@ class Toolbelt extends Component {
     }
 }
 
-const mapStateToProps = ({ equipment, hand, player, race, classname }) => {
-    return { equipment, hand, player, race, classname };
+const mapStateToProps = ({ armor, headgear, footgear, equipment, hand, player, race, classname }) => {
+    return { armor, headgear, footgear, equipment, hand, player, race, classname };
 };
 
-export default connect(mapStateToProps, { getData, getDataHand, getDataEquipment, playerCarry })(Toolbelt);
+export default connect(mapStateToProps, { getData, getDataHand, getDataEquipment, playerCarry, playerEquip })(Toolbelt);
