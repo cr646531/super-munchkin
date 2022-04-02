@@ -6,6 +6,8 @@ Card.belongsTo(Player);
 Player.hasMany(Card);
 Remote.belongsTo(Player);
 Player.belongsTo(Player);
+Player.hasOne(Card, { foreignKey: 'raceId' });
+Player.hasOne(Card, { foreignKey: 'classId' });
 
 // const shields = [];
 //

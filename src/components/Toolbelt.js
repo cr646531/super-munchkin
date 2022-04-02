@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Button, Drawer, Typography } from '@mui/material';
 import { Card, Icon } from '@components';
 import { connect } from 'react-redux';
-import { getDataHand, getDataEquipment, playerCarry } from '@src/store';
+import { getData, getDataHand, getDataEquipment, playerCarry } from '@src/store';
 
 const modals = {
     HAND: 'HAND',
@@ -31,7 +31,8 @@ class Toolbelt extends Component {
     }
 
     render() {
-        const { equipment, getDataHand, getDataEquipment, hand, player, playerCarry } = this.props;
+        const { classname, equipment, getData, getDataHand, getDataEquipment, hand, player, playerCarry, race } =
+            this.props;
         const { modalOpen } = this.state;
 
         return (
@@ -74,9 +75,9 @@ class Toolbelt extends Component {
                     </div>
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'row', marginTop: 32 }}>
-                    <Card card={player && player.race ? player.race : { name: 'Race' }} small />
+                    <Card card={race ? race : { name: 'Race' }} small />
                     <div style={{ marginRight: 8 }} />
-                    <Card card={player && player.class ? player.class : { name: 'Class' }} small />
+                    <Card card={classname ? classname : { name: 'Class' }} small />
                     <div style={{ marginRight: 8 }} />
                     <Card card={player && player.headgear ? player.headgear : { name: 'Headgear' }} small />
                     <div style={{ marginRight: 8 }} />
@@ -113,11 +114,11 @@ class Toolbelt extends Component {
                                 onClick={() => {
                                     if (card.category === 'race' || card.category === 'class') {
                                         playerCarry({ card, player });
-                                        setTimeout(() => getDataHand({ player }), 100);
+                                        setTimeout(() => getData({ player }), 100);
                                     } else if (card.type === 'treasure') {
                                         playerCarry({ card, player });
                                         setTimeout(() => getDataEquipment({ player }), 100);
-                                        setTimeout(() => getDataHand({ player }), 200);
+                                        setTimeout(() => getData({ player }), 200);
                                     }
                                 }}
                             >
@@ -157,8 +158,8 @@ class Toolbelt extends Component {
     }
 }
 
-const mapStateToProps = ({ equipment, hand, player }) => {
-    return { equipment, hand, player };
+const mapStateToProps = ({ equipment, hand, player, race, classname }) => {
+    return { equipment, hand, player, race, classname };
 };
 
-export default connect(mapStateToProps, { getDataHand, getDataEquipment, playerCarry })(Toolbelt);
+export default connect(mapStateToProps, { getData, getDataHand, getDataEquipment, playerCarry })(Toolbelt);

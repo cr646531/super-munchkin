@@ -66,7 +66,10 @@ router.get('/', async (req, res, next) => {
         const doors = await Card.findAll({ where: { type: 'door', status: 'inactive', PlayerId: null } });
         const treasures = await Card.findAll({ where: { type: 'treasure', status: 'inactive' } });
         const active = await Card.findOne({ where: { type: 'door', status: 'active' } });
-        res.send({ player, players, hand, doors, treasures, active, equipment });
+        const race = await Card.findOne({ where: { PlayerId: player.id, category: 'race', equipped: true } });
+        const classname = await Card.findOne({ where: { PlayerId: player.id, category: 'class', equipped: true } });
+
+        res.send({ player, players, hand, doors, treasures, active, equipment, race, classname });
     } catch (err) {
         next(err);
     }
