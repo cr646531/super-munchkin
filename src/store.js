@@ -15,6 +15,8 @@ const initialState = {
     active: null,
     error: '',
     updatedCard: null,
+    race: null,
+    classname: null,
 };
 
 const reducer = (state = initialState, action) => {

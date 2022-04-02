@@ -21,7 +21,7 @@ router.put('/carry', async (req, res, next) => {
         const card = await Card.findOne({ where: { id: req.body.card.id } });
 
         if (card.category === 'race' || card.category === 'class') {
-            card.status = 'used';
+            card.equipped = true;
             await card.save();
             if (card.category === 'race') player.race = card.name;
             if (card.category === 'class') player.class = card.name;
