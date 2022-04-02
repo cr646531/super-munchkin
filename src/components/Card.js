@@ -12,9 +12,9 @@ export default class Card extends React.Component {
     }
 
     render() {
-        const { type, face, level, name, text, subtext, small, medium, onClick, style } = this.props;
+        const { card, face = 'up', small, medium, onClick, style } = this.props;
 
-        if (!type) {
+        if (!card) {
             return (
                 <div style={style}>
                     <div
@@ -30,6 +30,8 @@ export default class Card extends React.Component {
                 </div>
             );
         }
+
+        const { type, name, category, status } = card;
 
         return (
             <div style={style}>

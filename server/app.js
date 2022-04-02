@@ -63,7 +63,6 @@ app.put('/card/update', async (req, res, next) => {
     try {
         const cardToUpdate = await Card.findOne({ where: { id: req.body.card.id } });
         cardToUpdate.set(card);
-        console.log('cardToUpdate: ', cardToUpdate);
         await cardToUpdate.save();
 
         res.send(cardToUpdate);
@@ -78,7 +77,6 @@ app.put('/player/update', async (req, res, next) => {
     try {
         const playerToUpdate = await Player.findOne({ where: { id: req.body.player.id } });
         playerToUpdate.set(player);
-        console.log('playerToUpdate: ', playerToUpdate);
         await playerToUpdate.save();
 
         res.send(playerToUpdate);
@@ -105,59 +103,53 @@ app.get('/data/treasures', (req, res, next) => {
         .catch(next);
 });
 
+app.get('/phase/loot', async (req, res, next) => {
+    try {
+        // get current player
+        const currPlayer = await Player.findOne({ where: { status: 'active' } });
+
+        // put the top card into the current player's hand
+        const topCard = await Card.findOne({
+            where: { type: 'door', PlayerId: null },
+            order: conn.random(),
+            limit: 1,
+        });
+        topCard.setPlayer(currPlayer);
+        await topCard.save();
+
+        // end player's turn
+        currPlayer.status = 'inactive';
+        currPlayer.phase = 'kick';
+        await currPlayer.save();
+
+        // set next player's turn
+        const nextPlayer = await Player.findOne({ where: { id: currPlayer.PlayerId } });
+        nextPlayer.status = 'active';
+        await nextPlayer.save();
+
+        res.send(nextPlayer);
+    } catch (err) {
+        console.log('err: ', err);
+        next(err);
+    }
+});
+
 app.get('/phase/kick', async (req, res, next) => {
     try {
         // kick in the door
-        const topCard = await Card.findOne({ where: { type: 'door', PlayerId: null }, order: conn.random(), limit: 1 });
+        const topCard = await Card.findOne({
+            where: { type: 'door', category: 'race', PlayerId: null },
+            order: conn.random(),
+            limit: 1,
+        });
         topCard.status = 'active';
         await topCard.save();
-
-        // advance to next stage
-        const player = await Player.findOne({ where: { status: 'active' } });
-        player.phase = 'resolve';
 
         res.send(topCard);
     } catch (err) {
         console.log('err: ', err);
         next(err);
     }
-    // Card.findOne({
-    //     where: { type: 'door' },
-    //     order: conn.random(),
-    //     limit: 1,
-    // })
-    //     .then((card) => {
-    //         card.set({ status: 'active' })
-
-    //     })
-    //     .catch(next);
 });
-
-// app.get('/data/rigged', (req, res, next)=> {
-//   Card.findAll()
-//     .then(cards => rig(cards))
-//     .then(deck => res.send(deck))
-//     .catch(next);
-// });
-
-// app.get('/data/rigSplit', (req, res, next)=> {
-//   Card.findAll()
-//     .then(cards => rigSplit(cards))
-//     .then(deck => res.send(deck))
-//     .catch(next);
-// });
-
-// app.post('/data/reset', (req, res, next)=> {
-//   db.syncAndSeed()
-//     .then(()=> res.sendStatus(204))
-//     .catch(next);
-// });
-
-// app.delete('/data/card/:id', (req, res, next)=> {
-//     Card.findById(req.params.id)
-//       .then( card => card.destroy() )
-//       .then( () => res.sendStatus(204))
-//       .catch(next);
-//   });
 
 module.exports = app;

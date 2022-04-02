@@ -24,7 +24,7 @@ class Toolbelt extends Component {
     }
 
     render() {
-        const { hand } = this.props;
+        const { hand, player } = this.props;
         const { modalOpen } = this.state;
 
         return (
@@ -36,13 +36,23 @@ class Toolbelt extends Component {
                     >
                         {hand.map((card, index) => (
                             <div key={index} style={{ marginRight: -60 }}>
-                                <Card type={card.type} small />
+                                <Card card={card} small />
                             </div>
                         ))}
                     </div>
                 ) : (
                     <div />
                 )}
+                {player && (
+                    <div>
+                        <Typography variant='h3'>Player</Typography>
+                        <div style={{ height: 16 }} />
+                        <Typography variant='h4'>{`name: ${player.name}`}</Typography>
+                        <Typography variant='h4'>{`phase: ${player.phase}`}</Typography>
+                        <Typography variant='h4'>{`speed: ${player.speed}`}</Typography>
+                    </div>
+                )}
+
                 <Drawer
                     anchor='bottom'
                     open={modalOpen === modals.HAND}
@@ -51,7 +61,7 @@ class Toolbelt extends Component {
                     <div style={styles.scrollableRow} onClick={() => this.setState({ modalOpen: modals.HAND })}>
                         {hand.map((card, index) => (
                             <div key={index} style={{ margin: 24 }}>
-                                <Card key={index} type={card.type} />
+                                <Card key={index} card={card} />
                             </div>
                         ))}
                     </div>
@@ -61,8 +71,8 @@ class Toolbelt extends Component {
     }
 }
 
-const mapStateToProps = ({ hand }) => {
-    return { hand };
+const mapStateToProps = ({ hand, player }) => {
+    return { hand, player };
 };
 
 export default connect(mapStateToProps, {})(Toolbelt);
