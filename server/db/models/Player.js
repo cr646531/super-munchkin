@@ -19,6 +19,10 @@ const Player = conn.define('Player', {
         type: DataTypes.STRING,
         defaultValue: 'kick',
     },
+    race: {
+        type: DataTypes.STRING,
+        defaultValue: 'Human',
+    },
 });
 
 module.exports = Player;
