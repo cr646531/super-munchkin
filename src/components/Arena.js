@@ -1,16 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Drawer, Typography } from '@mui/material';
 import { Card, Grid } from '@components';
-import {
-    drawDoor,
-    drawTreasure,
-    getActiveCard,
-    init,
-    kickOpenDoor,
-    lootTheRoom,
-    updateCard,
-    updatePlayer,
-} from '../store';
+import { drawTreasure, getActiveCard, init, kickOpenDoor, lootTheRoom, updateCard, updatePlayer } from '../store';
 import { connect } from 'react-redux';
 
 const styles = {
@@ -137,7 +128,6 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps, {
-    drawDoor,
     drawTreasure,
     getActiveCard,
     init,

@@ -46,18 +46,6 @@ const reducer = (state = initialState, action) => {
         case 'PLAYER_EQUIP':
             return Object.assign({}, state, { player: action.payload });
 
-        case 'DRAW_DOOR':
-            deckCopy = [...state.doors];
-            topCard = deckCopy.pop();
-            handCopy = [...state.hand];
-            handCopy.push(topCard);
-            topCard = null;
-
-            return Object.assign({}, state, {
-                hand: handCopy,
-                doors: deckCopy,
-            });
-
         case 'DRAW_TREASURE':
             deckCopy = [...state.treasures];
             topCard = deckCopy.pop();
@@ -173,38 +161,29 @@ export const getActiveCard = () => {
     };
 };
 
-/*
-    </3
-*/
-export const drawDoor = () => {
-    return (dispatch) => {
-        dispatch({ type: 'DRAW_DOOR' });
-    };
-};
+// export const getPlayers = () => {
+//     return (dispatch) => {
+//         return axios
+//             .get('/data/players')
+//             .then((res) => res.data)
+//             .then((players) => dispatch({ type: 'GET_PLAYERS', payload: players }));
+//     };
+// };
 
-export const getPlayers = () => {
-    return (dispatch) => {
-        return axios
-            .get('/data/players')
-            .then((res) => res.data)
-            .then((players) => dispatch({ type: 'GET_PLAYERS', payload: players }));
-    };
-};
+// export const getDoors = () => {
+//     return (dispatch) => {
+//         return axios
+//             .get('/data/doors')
+//             .then((res) => res.data)
+//             .then((doors) => dispatch({ type: 'GET_DOORS', payload: doors }));
+//     };
+// };
 
-export const getDoors = () => {
-    return (dispatch) => {
-        return axios
-            .get('/data/doors')
-            .then((res) => res.data)
-            .then((doors) => dispatch({ type: 'GET_DOORS', payload: doors }));
-    };
-};
-
-export const getTreasures = () => {
-    return (dispatch) => {
-        return axios
-            .get('/data/treasures')
-            .then((res) => res.data)
-            .then((treasures) => dispatch({ type: 'GET_TREASURES', payload: treasures }));
-    };
-};
+// export const getTreasures = () => {
+//     return (dispatch) => {
+//         return axios
+//             .get('/data/treasures')
+//             .then((res) => res.data)
+//             .then((treasures) => dispatch({ type: 'GET_TREASURES', payload: treasures }));
+//     };
+// };

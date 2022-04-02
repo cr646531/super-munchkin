@@ -7,7 +7,8 @@ const { Card } = require('../db').models;
 // middleware
 router.use(require('body-parser').json());
 
-// routes
+/* ---------- ROUTES ---------- */
+
 router.get('/', (req, res, next) => {
     Card.findAll()
         .then((cards) => res.send(cards))
@@ -15,7 +16,6 @@ router.get('/', (req, res, next) => {
 });
 
 router.put('/', (req, res, next) => {
-    console.log('here');
     Card.findAll({ where: req.body })
         .then((cards) => res.send(cards))
         .catch(next);
@@ -33,18 +33,5 @@ router.put('/update', (req, res, next) => {
         .then((card) => res.send(card))
         .catch(next);
 });
-
-// router.put('/update', async (req, res, next) => {
-//     console.log(req.body.card.id);
-//     try {
-//         res.send(
-//             await Card.findOne({ where: { id: req.body.card.id } })
-//                 .set(req.body.card)
-//                 .save()
-//         );
-//     } catch (err) {
-//         next(err);
-//     }
-// });
 
 module.exports = router;

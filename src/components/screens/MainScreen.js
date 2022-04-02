@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { init, getDoors, getPlayers, getTreasures } from '../../store';
+import { init } from '../../store';
 
 import { Arena, Toolbelt } from '@components';
 
@@ -29,9 +29,6 @@ const styles = {
 class MainScreen extends Component {
     componentDidMount() {
         this.props.init();
-        // this.props.getPlayers();
-        // this.props.getDoors();
-        // this.props.getTreasures();
     }
 
     render() {
@@ -54,4 +51,4 @@ const mapStateToProps = ({ players }) => {
     };
 };
 
-export default connect(mapStateToProps, { getDoors, getPlayers, getTreasures, init })(MainScreen);
+export default connect(mapStateToProps, { init })(MainScreen);

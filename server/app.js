@@ -5,6 +5,7 @@ const app = express();
 // routers
 const { players } = require('./routers');
 const { cards } = require('./routers');
+const { phase } = require('./routers');
 
 const db = require('./db');
 const { Card, Player } = db.models;
@@ -19,6 +20,7 @@ app.use(require('body-parser').json());
 // routers
 app.use('/players', players);
 app.use('/cards', cards);
+app.use('/phase', phase);
 
 // ROUTES
 app.get('/', (req, res, next) => res.sendFile(indexFile));
@@ -64,73 +66,6 @@ app.put('/data/hand', (req, res, next) => {
     Card.findAll({ where: { PlayerId: player.id, status: 'inactive' } })
         .then((cards) => res.send(cards))
         .catch(next);
-});
-
-app.get('/data/doors/active', (req, res, next) => {
-    Card.findOne({ where: { status: 'active' } })
-        .then((activeCard) => res.send(activeCard))
-        .catch(next);
-});
-
-app.get('/data/players', (req, res, next) => {
-    Player.findAll()
-        .then((players) => res.send(players))
-        .catch(next);
-});
-
-app.get('/data/treasures', (req, res, next) => {
-    Card.findAll({ where: { type: 'treasure' } })
-        .then((treasures) => res.send(treasures))
-        .catch(next);
-});
-
-app.get('/phase/loot', async (req, res, next) => {
-    try {
-        // get current player
-        const currPlayer = await Player.findOne({ where: { status: 'active' } });
-
-        // put the top card into the current player's hand
-        const topCard = await Card.findOne({
-            where: { type: 'door', PlayerId: null },
-            order: conn.random(),
-            limit: 1,
-        });
-        topCard.setPlayer(currPlayer);
-        await topCard.save();
-
-        // end player's turn
-        currPlayer.status = 'inactive';
-        currPlayer.phase = 'kick';
-        await currPlayer.save();
-
-        // set next player's turn
-        const nextPlayer = await Player.findOne({ where: { id: currPlayer.PlayerId } });
-        nextPlayer.status = 'active';
-        await nextPlayer.save();
-
-        res.send(nextPlayer);
-    } catch (err) {
-        console.log('err: ', err);
-        next(err);
-    }
-});
-
-app.get('/phase/kick', async (req, res, next) => {
-    try {
-        // kick in the door
-        const topCard = await Card.findOne({
-            where: { type: 'door', PlayerId: null },
-            order: conn.random(),
-            limit: 1,
-        });
-        topCard.status = 'active';
-        await topCard.save();
-
-        res.send(topCard);
-    } catch (err) {
-        console.log('err: ', err);
-        next(err);
-    }
 });
 
 module.exports = app;
