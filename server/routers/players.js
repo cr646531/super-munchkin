@@ -7,7 +7,8 @@ const { Card, Player } = require('../db').models;
 // middleware
 router.use(require('body-parser').json());
 
-// routes
+/* ---------- ROUTES ---------- */
+
 router.get('/', (req, res, next) => {
     Player.findAll()
         .then((players) => res.send(players))
