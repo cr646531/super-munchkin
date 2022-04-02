@@ -103,6 +103,18 @@ const Arena = ({
                                 setTimeout(() => {
                                     init();
                                 }, 300);
+                            case 'class':
+                                // put the card into the players hand
+                                active.status = 'inactive';
+                                active.PlayerId = player.id;
+                                updateCard(active);
+
+                                // progress to 'Loot the Room' stage
+                                player.phase = 'loot';
+                                updatePlayer(player);
+                                setTimeout(() => {
+                                    init();
+                                }, 300);
                         }
                     }}
                     style={{ marginLeft: 160 }}

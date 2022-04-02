@@ -52,6 +52,7 @@ class Toolbelt extends Component {
                         <Typography variant='h4'>{`phase: ${player.phase}`}</Typography>
                         <Typography variant='h4'>{`speed: ${player.speed}`}</Typography>
                         <Typography variant='h4'>{`race: ${player.race}`}</Typography>
+                        <Typography variant='h4'>{`class: ${player.class}`}</Typography>
                     </div>
                 )}
 
@@ -66,7 +67,7 @@ class Toolbelt extends Component {
                                 key={index}
                                 style={{ margin: 24 }}
                                 onClick={() => {
-                                    if (card.category === 'race') {
+                                    if (card.category === 'race' || card.category === 'class') {
                                         playerEquip({ card, player });
                                         setTimeout(() => getHand({ player }), 100);
                                     }

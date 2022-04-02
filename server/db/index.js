@@ -80,6 +80,28 @@ const syncAndSeed = () => {
                 category: 'race',
             }),
 
+            // classes
+            Card.create({
+                type: 'door',
+                name: 'Thief',
+                category: 'class',
+            }),
+            Card.create({
+                type: 'door',
+                name: 'Wizard',
+                category: 'class',
+            }),
+            Card.create({
+                type: 'door',
+                name: 'Warrior',
+                category: 'class',
+            }),
+            Card.create({
+                type: 'door',
+                name: 'Cleric',
+                category: 'class',
+            }),
+
             // treasures
             Card.create({
                 type: 'treasure',

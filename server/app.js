@@ -40,7 +40,7 @@ app.get('/data/init', async (req, res, next) => {
             players = await Player.findAll();
         }
 
-        const hand = await Card.findAll({ where: { PlayerId: player.id } });
+        const hand = await Card.findAll({ where: { PlayerId: player.id, status: 'inactive' } });
         const doors = await Card.findAll({ where: { type: 'door', status: 'inactive', PlayerId: null } });
         const treasures = await Card.findAll({ where: { type: 'treasure', status: 'inactive' } });
         const active = await Card.findOne({ where: { status: 'active' }, order: conn.random(), limit: 1 });
@@ -83,10 +83,11 @@ app.put('/player/equip', async (req, res, next) => {
         const player = await Player.findOne({ where: { id: req.body.player.id } });
         const card = await Card.findOne({ where: { id: req.body.card.id } });
 
-        if (card.category === 'race') {
+        if (card.category === 'race' || card.category === 'class') {
             card.status = 'used';
             await card.save();
-            player.race = card.name;
+            if (card.category === 'race') player.race = card.name;
+            if (card.category === 'class') player.class = card.name;
             await player.save();
         }
 
@@ -163,7 +164,7 @@ app.get('/phase/kick', async (req, res, next) => {
     try {
         // kick in the door
         const topCard = await Card.findOne({
-            where: { type: 'door', category: 'race', PlayerId: null },
+            where: { type: 'door', PlayerId: null },
             order: conn.random(),
             limit: 1,
         });
