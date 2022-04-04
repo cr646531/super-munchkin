@@ -50,12 +50,9 @@ const Arena = ({ getData, active, doors, kickOpenDoor, lootTheRoom, player, trea
                 <Card small onClick={() => console.log('graveyard')} style={{ marginBottom: 16 }} />
                 {treasures.length ? <Card card={{ type: 'treasure' }} face='down' small /> : <div />}
             </div>
+            <div style={{ width: 160 }} />
 
-            {active ? (
-                <Card card={active} medium onClick={onClickActive} style={{ marginLeft: 160 }} />
-            ) : (
-                <Card small style={{ marginLeft: 160 }} />
-            )}
+            {active ? <Card card={active} medium onClick={onClickActive} /> : <Card small />}
         </div>
     );
 };

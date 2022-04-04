@@ -22,9 +22,8 @@ router.put('/kick', async (req, res, next) => {
         await player.save();
 
         const card = await Card.findOne({ where: { type: 'door', PlayerId: null } });
-        card.status = 'active';
+        card.status = 'in-play';
         await card.save();
-
         res.send({ card, player });
     } catch (err) {
         next(err);
