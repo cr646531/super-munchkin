@@ -24,71 +24,39 @@ Player.belongsTo(Player);
 // }
 
 const syncAndSeed = () => {
-    console.log('database syncing and seeding');
     return conn.sync({ force: true }).then(() => {
         const promises = [
-            Player.create({
-                name: 'Buckets',
-                level: 1,
-                speed: 2,
-                hand: [],
-            }),
-            Player.create({
-                name: 'Pockets',
-                level: 1,
-                speed: 2,
-                hand: [],
-            }),
-            Player.create({
-                name: 'Tonics',
-                level: 1,
-                speed: 2,
-                hand: [],
-            }),
+            // players
+            Player.create({ name: 'Buckets', level: 1, speed: 2, hand: [] }),
+            Player.create({ name: 'Pockets', level: 1, speed: 2, hand: [] }),
+            Player.create({ name: 'Tonics', level: 1, speed: 2, hand: [] }),
 
             // races
-            Card.create({
-                type: 'door',
-                name: 'Elf',
-                category: 'race',
-            }),
-            Card.create({
-                type: 'door',
-                name: 'Dwarf',
-                category: 'race',
-            }),
-            Card.create({
-                type: 'door',
-                name: 'Halfling',
-                category: 'race',
-            }),
-            Card.create({
-                type: 'door',
-                name: 'Orc',
-                category: 'race',
-            }),
+            Card.create({ type: 'door', name: 'Elf', category: 'race' }),
+            Card.create({ type: 'door', name: 'Elf', category: 'race' }),
+            Card.create({ type: 'door', name: 'Elf', category: 'race' }),
+            Card.create({ type: 'door', name: 'Dwarf', category: 'race' }),
+            Card.create({ type: 'door', name: 'Dwarf', category: 'race' }),
+            Card.create({ type: 'door', name: 'Dwarf', category: 'race' }),
+            Card.create({ type: 'door', name: 'Halfling', category: 'race' }),
+            Card.create({ type: 'door', name: 'Halfling', category: 'race' }),
+            Card.create({ type: 'door', name: 'Halfling', category: 'race' }),
+            Card.create({ type: 'door', name: 'Orc', category: 'race' }),
+            Card.create({ type: 'door', name: 'Orc', category: 'race' }),
 
             // classes
-            Card.create({
-                type: 'door',
-                name: 'Thief',
-                category: 'class',
-            }),
-            Card.create({
-                type: 'door',
-                name: 'Wizard',
-                category: 'class',
-            }),
-            Card.create({
-                type: 'door',
-                name: 'Warrior',
-                category: 'class',
-            }),
-            Card.create({
-                type: 'door',
-                name: 'Cleric',
-                category: 'class',
-            }),
+            Card.create({ type: 'door', name: 'Thief', category: 'class' }),
+            Card.create({ type: 'door', name: 'Thief', category: 'class' }),
+            Card.create({ type: 'door', name: 'Thief', category: 'class' }),
+            Card.create({ type: 'door', name: 'Wizard', category: 'class' }),
+            Card.create({ type: 'door', name: 'Wizard', category: 'class' }),
+            Card.create({ type: 'door', name: 'Wizard', category: 'class' }),
+            Card.create({ type: 'door', name: 'Warrior', category: 'class' }),
+            Card.create({ type: 'door', name: 'Warrior', category: 'class' }),
+            Card.create({ type: 'door', name: 'Warrior', category: 'class' }),
+            Card.create({ type: 'door', name: 'Cleric', category: 'class' }),
+            Card.create({ type: 'door', name: 'Cleric', category: 'class' }),
+            Card.create({ type: 'door', name: 'Cleric', category: 'class' }),
 
             // shields
             Card.create({ type: 'treasure', name: 'Shield', category: 'shields', bonus: 1, icon: 'shield_1' }),
