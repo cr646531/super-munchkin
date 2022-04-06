@@ -7,22 +7,6 @@ Player.hasMany(Card);
 Remote.belongsTo(Player);
 Player.belongsTo(Player);
 
-// const shields = [];
-//
-// let i = 1;
-// while (i < 16) {
-//     shields.push(
-//         Card.create({
-//             type: 'treasure',
-//             status: 'inactive',
-//             name: 'Shield',
-//             category: 'shields',
-//             icon: `shield_${i}`,
-//         })
-//     );
-//     i++;
-// }
-
 const syncAndSeed = () => {
     return conn.sync({ force: true }).then(() => {
         const promises = [
@@ -142,6 +126,7 @@ const syncAndSeed = () => {
             Card.create({ type: 'treasure', name: 'Axe', category: 'axe', bonus: 3, icon: 'axe_11' }),
             Card.create({ type: 'treasure', name: 'Axe', category: 'axe', bonus: 3, icon: 'axe_12' }),
 
+            Card.create({ id: 1001, type: 'door', name: 'Floating Nose', category: 'monster', status: 'combat' }),
             // creatures
             // Card.create({
             //     type: 'door',

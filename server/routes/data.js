@@ -83,6 +83,7 @@ router.get('/', async (req, res, next) => {
                 category: { [Op.notIn]: ['race', 'class', 'headgear', 'footgear', 'armor'] },
             },
         });
+        const monstersInCombat = await Card.findAll({ where: { status: 'combat' } });
 
         res.send({
             player,
@@ -98,6 +99,7 @@ router.get('/', async (req, res, next) => {
             headgear,
             footgear,
             equipped,
+            monstersInCombat,
         });
     } catch (err) {
         next(err);

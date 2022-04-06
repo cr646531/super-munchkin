@@ -21,6 +21,7 @@ const initialState = {
     armor: null,
     footgear: null,
     equipped: [],
+    monstersInCombat: [],
 };
 
 const reducer = (state = initialState, action) => {

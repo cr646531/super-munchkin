@@ -1,5 +1,5 @@
-import React from 'react';
-import { Card } from '@components';
+import React, { useState } from 'react';
+import { Card, CombatPopover } from '@components';
 import { getData, kickOpenDoor, lootTheRoom, cardUpdate, playerUpdate } from '../store';
 import { connect } from 'react-redux';
 
@@ -13,7 +13,13 @@ const styles = {
     },
 };
 
+const modals = {
+    COMBAT: 'COMBAT',
+};
+
 const Arena = ({ getData, active, doors, kickOpenDoor, lootTheRoom, player, treasures, cardUpdate, playerUpdate }) => {
+    const [modalOpen, setModalOpen] = useState(null);
+
     const onClickDeck = () => {
         if (player.phase === 'kick') {
             kickOpenDoor(player);
@@ -37,11 +43,14 @@ const Arena = ({ getData, active, doors, kickOpenDoor, lootTheRoom, player, trea
                 player.phase = 'loot';
                 playerUpdate(player);
                 setTimeout(() => getData(), 300);
+            case 'monster':
+                setModalOpen(modals.COMBAT);
         }
     };
 
     return (
         <div style={styles.root}>
+            {/* <CombatPopover /> */}
             <div style={{ marginRight: 48 }}>
                 <Card small style={{ marginBottom: 16 }} />
                 {doors.length ? <Card card={{ type: 'door' }} face='down' small onClick={onClickDeck} /> : <div />}
